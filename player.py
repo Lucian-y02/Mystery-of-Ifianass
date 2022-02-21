@@ -23,11 +23,13 @@ class Player(pygame.sprite.Sprite):
             pass
 
         # Характеристики
-        self.speed = kwargs.get("speed", 3)
+        self.default_speed = kwargs.get("default_speed", 3)
+        self.speed = self.default_speed
 
         # Перемещение
         self.move_x = 0
         self.move_y = 0
+        self.old_place = (self.rect.x, self.rect.y)  # Сохранение координат
 
         # Управление
         self.control_data = {
@@ -37,6 +39,7 @@ class Player(pygame.sprite.Sprite):
         self.control_function = self.control_data[kwargs.get("control_function", "keyboard")]
 
     def update(self):
+        self.old_place = (self.rect.x, self.rect.y)
         self.move_x = 0
         self.move_y = 0
 
@@ -45,6 +48,9 @@ class Player(pygame.sprite.Sprite):
 
         # Смещение игрока
         self.rect.move_ip(self.move_x, self.move_y)
+
+        # Отслеживание столкновений
+        self.check_collision()
 
     # Управление клавиатурой
     def keyboard_check_pressing(self):
@@ -79,3 +85,12 @@ class Player(pygame.sprite.Sprite):
         if increase_y:
             self.move_y += (min(increase_y, -self.speed) if increase_y < 0 else
                             max(increase_y, self.speed))
+
+    # Столкновения
+    def check_collision(self):
+        for obj in self.groups_data["game_stuff"]:
+            if (self.rect.colliderect(obj.rect) and
+                    (obj.__class__.__name__ == "VerticalWall" or
+                     obj.__class__.__name__ == "HorizontalWall")):
+                self.rect.x = self.old_place[0]
+                self.rect.y = self.old_place[1]

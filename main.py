@@ -3,6 +3,7 @@ import sys
 import pygame
 
 from player import Player
+from game_stuff import *
 
 
 class Scene:
@@ -61,5 +62,6 @@ if __name__ == '__main__':
 
     player = Player(scene.groups_data, x=64 * 5, y=64 * 4,
                     control_function="game_pad")
+    Box(scene.groups_data["game_stuff"], 64 * 7, 64 * 6)
 
     scene.play()
