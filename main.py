@@ -61,7 +61,7 @@ if __name__ == '__main__':
     scene = Scene()
 
     player = Player(scene.groups_data, x=64 * 5, y=64 * 4,
-                    control_function="game_pad")
+                    control_function="keyboard")
     Box(scene.groups_data["game_stuff"], 64 * 7, 64 * 6)
 
     scene.play()

@@ -29,7 +29,6 @@ class Player(pygame.sprite.Sprite):
         # Перемещение
         self.move_x = 0
         self.move_y = 0
-        self.old_place = (self.rect.x, self.rect.y)  # Сохранение координат
 
         # Управление
         self.control_data = {
@@ -39,7 +38,6 @@ class Player(pygame.sprite.Sprite):
         self.control_function = self.control_data[kwargs.get("control_function", "keyboard")]
 
     def update(self):
-        self.old_place = (self.rect.x, self.rect.y)
         self.move_x = 0
         self.move_y = 0
 
@@ -90,7 +88,8 @@ class Player(pygame.sprite.Sprite):
     def check_collision(self):
         for obj in self.groups_data["game_stuff"]:
             if (self.rect.colliderect(obj.rect) and
-                    (obj.__class__.__name__ == "VerticalWall" or
-                     obj.__class__.__name__ == "HorizontalWall")):
-                self.rect.x = self.old_place[0]
-                self.rect.y = self.old_place[1]
+                    obj.__class__.__name__ == "VerticalWall"):
+                self.rect.x += -self.speed if self.rect.x < obj.rect.x else self.speed
+            if (self.rect.colliderect(obj.rect) and
+                    obj.__class__.__name__ == "HorizontalWall"):
+                self.rect.y += -self.speed if self.rect.y < obj.rect.y else self.speed
