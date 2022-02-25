@@ -21,6 +21,9 @@ class Scene:
         self.game_run = True
 
         self.draw_grid = False  # Рисование сетки
+        self.fps_show = True  # Отображение FPS
+
+        self.default_font = pygame.font.Font(None, 24)  # Стандартный шрифт
 
     def play(self):
         pygame.mouse.set_visible(False)
@@ -40,6 +43,8 @@ class Scene:
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_g:
                     self.draw_grid = not self.draw_grid
+                if event.key == pygame.K_f:
+                    self.fps_show = not self.fps_show
         for key in self.groups_data:
             self.groups_data[key].update()
 
@@ -54,6 +59,9 @@ class Scene:
             for y in range(self.screen.get_height() // 64):
                 pygame.draw.line(self.screen, (200, 204, 194),
                                  (0, 64 * y), (self.screen.get_width(), 64 * y))
+        if self.fps_show:
+            self.screen.blit(self.default_font.render(f"FPS {str(round(self.clock.get_fps()))}",
+                                                      False, (200, 204, 194)), (20, 20))
 
 
 if __name__ == '__main__':
@@ -61,7 +69,7 @@ if __name__ == '__main__':
     scene = Scene()
 
     player = Player(scene.groups_data, x=64 * 5, y=64 * 4,
-                    control_function="keyboard")
+                    control_function="game_pad")
     Box(scene.groups_data["game_stuff"], 64 * 7, 64 * 6)
 
     scene.play()
