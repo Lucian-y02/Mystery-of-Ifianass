@@ -11,26 +11,26 @@ pygame.init()
 
 # Базовая вертикальная стена
 class VerticalWall(pygame.sprite.Sprite):
-    def __init__(self, group, coordinates):
+    def __init__(self, group, coord):
         super(VerticalWall, self).__init__(group)
         self.shift = constants.wall_shift
         self.image = pygame.Surface((1, 64 - self.shift * 2))
         self.image.fill((200, 204, 194))
         self.rect = self.image.get_rect()
-        self.rect.x = coordinates[0]
-        self.rect.y = coordinates[1] + self.shift
+        self.rect.x = coord[0]
+        self.rect.y = coord[1] + self.shift
 
 
 # Базовая горизонтальная стена
 class HorizontalWall(pygame.sprite.Sprite):
-    def __init__(self, group, coordinates):
+    def __init__(self, group, coord):
         super(HorizontalWall, self).__init__(group)
         self.shift = constants.wall_shift
         self.image = pygame.Surface((64 - self.shift * 2, 1))
         self.image.fill((200, 204, 194))
         self.rect = self.image.get_rect()
-        self.rect.x = coordinates[0] + self.shift
-        self.rect.y = coordinates[1]
+        self.rect.x = coord[0] + self.shift
+        self.rect.y = coord[1]
 
 
 class Box:

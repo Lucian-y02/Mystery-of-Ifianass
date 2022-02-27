@@ -72,11 +72,11 @@ if __name__ == '__main__':
 
     player = Player(scene.groups_data, (64 * 5, 64 * 4),
                     control_function="game_pad")
-    Enemy(scene.groups_data, (64 * 9, 64 * 6))
-    Enemy(scene.groups_data, (64 * 10, 64 * 3))
-    Enemy(scene.groups_data, (64 * 3, 64 * 2))
-    Enemy(scene.groups_data, (65 * 15, 64 * 3))
-    Enemy(scene.groups_data, (65 * 11, 64 * 7))
+    Enemy(scene.groups_data, (64 * 9, 64 * 6), player)
+    # Enemy(scene.groups_data, (64 * 10, 64 * 3), (player.rect.x, player.rect.y))
+    # Enemy(scene.groups_data, (64 * 3, 64 * 2), (player.rect.x, player.rect.y))
+    # Enemy(scene.groups_data, (65 * 15, 64 * 3), (player.rect.x, player.rect.y))
+    # Enemy(scene.groups_data, (65 * 11, 64 * 7), (player.rect.x, player.rect.y))
     Box(scene.groups_data["game_stuff"], x=64 * 7, y=64 * 6)
     Box(scene.groups_data["game_stuff"], x=64 * 10, y=64 * 4)
     Box(scene.groups_data["game_stuff"], x=64 * 14, y=64 * 10)

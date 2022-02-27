@@ -9,19 +9,23 @@ from game_stuff import *
 pygame.init()
 
 
+# Противник
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, groups: dict, coordinates, size=(38, 42), max_health_points=100):
+    def __init__(self, groups: dict, coord, target, size=(38, 42), max_health_points=100):
         super(Enemy, self).__init__(groups["enemies"])
         self.image = pygame.Surface(size)
         self.image.fill((200, 204, 194))
         self.rect = self.image.get_rect()
-        self.rect.x = coordinates[0] + 13
-        self.rect.y = coordinates[1] + 11
+        self.rect.x = coord[0] + 13
+        self.rect.y = coord[1] + 11
 
         self.groups_data = groups
 
-        self.max_health_points = max_health_points
+        # Характеристики
+        self.max_health_points = max_health_points  # Максимальео количество здоровья
         self.health_points = self.max_health_points
+        self.target_list = [target]  # Список возможных целей
+        self.target = target  # Цель
         HealthPointsIndicator(groups["game_stuff"], self, size=(self.rect.width, 4))
 
     def update(self):

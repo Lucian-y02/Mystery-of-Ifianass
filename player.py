@@ -12,14 +12,14 @@ pygame.init()
 
 # Игрок
 class Player(pygame.sprite.Sprite):
-    def __init__(self, groups: dict, coordinates, **kwargs):
+    def __init__(self, groups: dict, coord, **kwargs):
         super(Player, self).__init__(groups["player"])
         self.groups_data = groups
         self.image = pygame.Surface((kwargs.get("size", (44, 64))))
         self.image.fill(kwargs.get("color", (200, 204, 194)))
         self.rect = self.image.get_rect()
-        self.rect.x = coordinates[0] + 12
-        self.rect.y = coordinates[1]
+        self.rect.x = coord[0] + 12
+        self.rect.y = coord[1]
 
         # Геймпад
         self.game_pad = None
@@ -35,10 +35,6 @@ class Player(pygame.sprite.Sprite):
         # Перемещение
         self.move_x = 0
         self.move_y = 0
-        # Рывок
-        self.dash_cool_down = kwargs.get("dash_cool_down", 1)
-        self.max_speed = self.speed * 4
-        self.dash_timer = 0
 
         # Управление
         self.control_data = {
@@ -47,10 +43,18 @@ class Player(pygame.sprite.Sprite):
         }
         self.control_function = self.control_data[kwargs.get("control_function", "keyboard")]
 
-        # Указатель и атака
         self.pointer = Pointer(self.groups_data["game_stuff"], self)  # Указатель
+
+        # Атака
         self.chop_cool_down = kwargs.get("shop_cool_down", 1)
         self.chop_ready = True  # Возможность провести атаку
+        self.do_chop = True  # Атака
+
+        # Рывок
+        self.dash_cool_down = kwargs.get("dash_cool_down", 1)
+        self.dash_ready = True  # Возможность сделать рывок
+        self.do_dash = False  # Рывок
+        self.dash_duration = kwargs.get("dash_duration", 0.35)  # Время продолжительности рывка
 
     def update(self):
         self.move_x = 0
@@ -58,6 +62,17 @@ class Player(pygame.sprite.Sprite):
 
         # Ослеживание нажатий
         self.control_function()
+
+        # Рывок
+        if self.do_dash:
+            if self.pointer.side == "UP":
+                self.move_y -= self.default_speed * 2
+            elif self.pointer.side == "DOWN":
+                self.move_y += self.default_speed * 2
+            elif self.pointer.side == "LEFT":
+                self.move_x -= self.default_speed * 2
+            elif self.pointer.side == "RIGHT":
+                self.move_x += self.default_speed * 2
 
         # Смещение игрока
         self.rect.move_ip(self.move_x, self.move_y)
@@ -90,7 +105,14 @@ class Player(pygame.sprite.Sprite):
             Chop(self.groups_data["player_chops"], self, damage=60)
             self.speed = 0
             self.chop_ready = False
-            threading.Thread(target=self.chop_timer).start()
+            threading.Thread(target=self.chop_timer_reloading).start()
+        # Рывок
+        if key[pygame.K_k] and self.dash_ready and not self.do_dash:
+            self.dash_ready = False
+            self.do_dash = True
+            self.speed = 0
+            self.do_chop = False
+            threading.Thread(target=self.dash_timer).start()
 
     # Управление геймпадом
     def game_pad_check_pressing(self):
@@ -111,11 +133,18 @@ class Player(pygame.sprite.Sprite):
                             max(increase_y, self.speed))
             self.pointer.side_update("DOWN" if increase_y > 0 else "UP")
         # Удар
-        if self.game_pad.get_button(2) and self.chop_ready:
+        if self.game_pad.get_button(2) and self.chop_ready and self.do_chop:
             Chop(self.groups_data["player_chops"], self, damage=60)
             self.speed = 0
             self.chop_ready = False
-            threading.Thread(target=self.chop_timer).start()
+            threading.Thread(target=self.chop_timer_reloading).start()
+        # Рывок
+        if self.game_pad.get_button(0) and self.dash_ready and not self.do_dash:
+            self.dash_ready = False
+            self.do_dash = True
+            self.speed = 0
+            self.do_chop = False
+            threading.Thread(target=self.dash_timer).start()
 
     # Столкновения
     def check_collision(self):
@@ -137,11 +166,21 @@ class Player(pygame.sprite.Sprite):
                     self.rect.y += self.default_speed
                 self.move_y = 0
 
-    # Рывок
-    def dash(self):
-        pass
-
     # Таймер, по истечению которого можно провести следующую атаку
-    def chop_timer(self):
+    def chop_timer_reloading(self):
         time.sleep(self.chop_cool_down)
         self.chop_ready = True
+
+    # Таймер, по истечению которого можно использовать рываок
+    def dash_timer_reloading(self):
+        time.sleep(self.dash_cool_down)
+        self.dash_ready = True
+
+    # Таймер, по истечению которого рывок заканчивается
+    def dash_timer(self):
+        time.sleep(self.dash_duration)
+        self.do_dash = False
+        self.speed = self.default_speed
+        self.do_chop = True
+        self.pointer.side_update(self.pointer.side)
+        threading.Thread(target=self.dash_timer_reloading).start()
