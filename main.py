@@ -4,6 +4,7 @@ import pygame
 
 from player import Player
 from game_stuff import *
+from enemies import *
 
 
 class Scene:
@@ -12,9 +13,10 @@ class Scene:
         self.background_color = kwargs.get("background_color", (27, 29, 31))  # Цвет фона
         # Группы спрайтов
         self.groups_data = {
-            "player": pygame.sprite.Group(),
-            "enemy": pygame.sprite.Group(),
-            "game_stuff": pygame.sprite.Group()
+            "player": pygame.sprite.Group(),  # Игрок
+            "player_chops": pygame.sprite.Group(),  # Удары игрока
+            "enemies": pygame.sprite.Group(),  # Проитвники
+            "game_stuff": pygame.sprite.Group()  # Различные игровые объекты
         }
         self.clock = pygame.time.Clock()
         self.FPS = kwargs.get("FPS", 60)
@@ -68,8 +70,15 @@ if __name__ == '__main__':
     pygame.init()
     scene = Scene()
 
-    player = Player(scene.groups_data, x=64 * 5, y=64 * 4,
+    player = Player(scene.groups_data, (64 * 5, 64 * 4),
                     control_function="game_pad")
-    Box(scene.groups_data["game_stuff"], 64 * 7, 64 * 6)
+    Enemy(scene.groups_data, (64 * 9, 64 * 6))
+    Enemy(scene.groups_data, (64 * 10, 64 * 3))
+    Enemy(scene.groups_data, (64 * 3, 64 * 2))
+    Enemy(scene.groups_data, (65 * 15, 64 * 3))
+    Enemy(scene.groups_data, (65 * 11, 64 * 7))
+    Box(scene.groups_data["game_stuff"], x=64 * 7, y=64 * 6)
+    Box(scene.groups_data["game_stuff"], x=64 * 10, y=64 * 4)
+    Box(scene.groups_data["game_stuff"], x=64 * 14, y=64 * 10)
 
     scene.play()

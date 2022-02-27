@@ -4,6 +4,7 @@ import time
 import pygame
 
 from game_stuff import *
+import constants
 
 
 pygame.init()
@@ -11,14 +12,14 @@ pygame.init()
 
 # Игрок
 class Player(pygame.sprite.Sprite):
-    def __init__(self, groups: dict, **kwargs):
+    def __init__(self, groups: dict, coordinates, **kwargs):
         super(Player, self).__init__(groups["player"])
         self.groups_data = groups
         self.image = pygame.Surface((kwargs.get("size", (44, 64))))
         self.image.fill(kwargs.get("color", (200, 204, 194)))
         self.rect = self.image.get_rect()
-        self.rect.x = kwargs.get("x", 0) + 12
-        self.rect.y = kwargs.get("y", 0)
+        self.rect.x = coordinates[0] + 12
+        self.rect.y = coordinates[1]
 
         # Геймпад
         self.game_pad = None
@@ -28,7 +29,7 @@ class Player(pygame.sprite.Sprite):
             pass
 
         # Характеристики
-        self.default_speed = kwargs.get("default_speed", 3)
+        self.default_speed = constants.player_speed
         self.speed = self.default_speed
 
         # Перемещение
@@ -49,7 +50,6 @@ class Player(pygame.sprite.Sprite):
         # Указатель и атака
         self.pointer = Pointer(self.groups_data["game_stuff"], self)  # Указатель
         self.chop_cool_down = kwargs.get("shop_cool_down", 1)
-        self.chop_time = self.chop_cool_down
         self.chop_ready = True  # Возможность провести атаку
 
     def update(self):
@@ -87,7 +87,7 @@ class Player(pygame.sprite.Sprite):
             self.pointer.side_update("LEFT")
         # Удар
         if key[pygame.K_j] and self.chop_ready:
-            Chop(self.groups_data["game_stuff"], self, False)
+            Chop(self.groups_data["player_chops"], self, damage=60)
             self.speed = 0
             self.chop_ready = False
             threading.Thread(target=self.chop_timer).start()
@@ -112,7 +112,7 @@ class Player(pygame.sprite.Sprite):
             self.pointer.side_update("DOWN" if increase_y > 0 else "UP")
         # Удар
         if self.game_pad.get_button(2) and self.chop_ready:
-            Chop(self.groups_data["game_stuff"], self, False)
+            Chop(self.groups_data["player_chops"], self, damage=60)
             self.speed = 0
             self.chop_ready = False
             threading.Thread(target=self.chop_timer).start()
@@ -122,15 +122,26 @@ class Player(pygame.sprite.Sprite):
         for obj in self.groups_data["game_stuff"]:
             if (self.rect.colliderect(obj.rect) and
                     obj.__class__.__name__ == "VerticalWall"):
-                self.rect.x += -self.speed if self.rect.x < obj.rect.x else self.speed
+                if (abs(self.rect.x + self.rect.width - obj.rect.x) >
+                        abs(self.rect.x - obj.rect.x)):
+                    self.rect.x += self.default_speed
+                else:
+                    self.rect.x -= self.default_speed
+                self.move_x = 0
             if (self.rect.colliderect(obj.rect) and
                     obj.__class__.__name__ == "HorizontalWall"):
-                self.rect.y += -self.speed if self.rect.y < obj.rect.y else self.speed
+                if (abs(self.rect.y - obj.rect.y) >
+                        abs(self.rect.y + self.rect.width - obj.rect.y)):
+                    self.rect.y -= self.default_speed
+                else:
+                    self.rect.y += self.default_speed
+                self.move_y = 0
 
     # Рывок
     def dash(self):
         pass
 
+    # Таймер, по истечению которого можно провести следующую атаку
     def chop_timer(self):
         time.sleep(self.chop_cool_down)
         self.chop_ready = True
