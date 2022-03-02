@@ -2,8 +2,7 @@ import sys
 
 import pygame
 
-from player import Player
-from game_stuff import *
+from level_editor import load_level
 from enemies import *
 
 
@@ -28,6 +27,7 @@ class Scene:
         self.default_font = pygame.font.Font(None, 24)  # Стандартный шрифт
 
     def play(self):
+        load_level("Levels/level_0.lvl", self.groups_data)
         pygame.mouse.set_visible(False)
         while self.game_run:
             self.check_events()
@@ -69,16 +69,5 @@ class Scene:
 if __name__ == '__main__':
     pygame.init()
     scene = Scene()
-
-    player = Player(scene.groups_data, (64 * 5, 64 * 4),
-                    control_function="game_pad")
-    Enemy(scene.groups_data, (64 * 9, 64 * 6), player)
-    # Enemy(scene.groups_data, (64 * 10, 64 * 3), (player.rect.x, player.rect.y))
-    # Enemy(scene.groups_data, (64 * 3, 64 * 2), (player.rect.x, player.rect.y))
-    # Enemy(scene.groups_data, (65 * 15, 64 * 3), (player.rect.x, player.rect.y))
-    # Enemy(scene.groups_data, (65 * 11, 64 * 7), (player.rect.x, player.rect.y))
-    Box(scene.groups_data["game_stuff"], x=64 * 7, y=64 * 6)
-    Box(scene.groups_data["game_stuff"], x=64 * 10, y=64 * 4)
-    Box(scene.groups_data["game_stuff"], x=64 * 14, y=64 * 10)
 
     scene.play()

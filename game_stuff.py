@@ -34,11 +34,11 @@ class HorizontalWall(pygame.sprite.Sprite):
 
 
 class Box:
-    def __init__(self, group, x=0, y=0):
-        HorizontalWall(group, (x, y - 1))
-        HorizontalWall(group, (x, y + 64))
-        VerticalWall(group, (x - 1, y))
-        VerticalWall(group, (x + 64, y))
+    def __init__(self, group, coord):
+        HorizontalWall(group, (coord[0], coord[1] - 1))
+        HorizontalWall(group, (coord[0], coord[1] + 64))
+        VerticalWall(group, (coord[0] - 1, coord[1]))
+        VerticalWall(group, (coord[0] + 64, coord[1]))
 
 
 # Указатель

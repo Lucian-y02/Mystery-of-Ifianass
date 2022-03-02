@@ -51,7 +51,7 @@ class Player(pygame.sprite.Sprite):
         self.do_chop = True  # Атака
 
         # Рывок
-        self.dash_cool_down = kwargs.get("dash_cool_down", 1)
+        self.dash_cool_down = kwargs.get("dash_cool_down", 0.5)
         self.dash_ready = True  # Возможность сделать рывок
         self.do_dash = False  # Рывок
         self.dash_duration = kwargs.get("dash_duration", 0.35)  # Время продолжительности рывка
@@ -151,6 +151,7 @@ class Player(pygame.sprite.Sprite):
         for obj in self.groups_data["game_stuff"]:
             if (self.rect.colliderect(obj.rect) and
                     obj.__class__.__name__ == "VerticalWall"):
+                self.do_dash = False
                 if (abs(self.rect.x + self.rect.width - obj.rect.x) >
                         abs(self.rect.x - obj.rect.x)):
                     self.rect.x += self.default_speed
@@ -159,6 +160,7 @@ class Player(pygame.sprite.Sprite):
                 self.move_x = 0
             if (self.rect.colliderect(obj.rect) and
                     obj.__class__.__name__ == "HorizontalWall"):
+                self.do_dash = False
                 if (abs(self.rect.y - obj.rect.y) >
                         abs(self.rect.y + self.rect.width - obj.rect.y)):
                     self.rect.y -= self.default_speed
