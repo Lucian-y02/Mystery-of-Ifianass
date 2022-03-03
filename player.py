@@ -17,9 +17,14 @@ class Player(pygame.sprite.Sprite):
         self.groups_data = groups
         self.image = pygame.Surface((kwargs.get("size", (44, 64))))
         self.image.fill(kwargs.get("color", (200, 204, 194)))
+        # Основной Rectangle
         self.rect = self.image.get_rect()
         self.rect.x = coord[0] + 12
         self.rect.y = coord[1]
+        # Rectangle для считывания столкновений
+        self.collision_rect = pygame.rect.Rect(
+            (self.rect.x, self.rect.y + self.rect.height // 2,
+             self.rect.width, self.rect.height // 2))
 
         # Геймпад
         self.game_pad = None
@@ -54,7 +59,7 @@ class Player(pygame.sprite.Sprite):
         self.dash_cool_down = kwargs.get("dash_cool_down", 0.5)
         self.dash_ready = True  # Возможность сделать рывок
         self.do_dash = False  # Рывок
-        self.dash_duration = kwargs.get("dash_duration", 0.35)  # Время продолжительности рывка
+        self.dash_duration = kwargs.get("dash_duration", 0.4)  # Время продолжительности рывка
 
     def update(self):
         self.move_x = 0
@@ -76,6 +81,8 @@ class Player(pygame.sprite.Sprite):
 
         # Смещение игрока
         self.rect.move_ip(self.move_x, self.move_y)
+        self.collision_rect.x = self.rect.x
+        self.collision_rect.y = self.rect.y + self.rect.height // 2
 
         # Отслеживание столкновений
         self.check_collision()
@@ -149,20 +156,20 @@ class Player(pygame.sprite.Sprite):
     # Столкновения
     def check_collision(self):
         for obj in self.groups_data["game_stuff"]:
-            if (self.rect.colliderect(obj.rect) and
+            if (self.collision_rect.colliderect(obj.rect) and
                     obj.__class__.__name__ == "VerticalWall"):
                 self.do_dash = False
-                if (abs(self.rect.x + self.rect.width - obj.rect.x) >
-                        abs(self.rect.x - obj.rect.x)):
+                if (abs(self.collision_rect.x + self.collision_rect.width - obj.rect.x) >
+                        abs(self.collision_rect.x - obj.rect.x)):
                     self.rect.x += self.default_speed
                 else:
                     self.rect.x -= self.default_speed
                 self.move_x = 0
-            if (self.rect.colliderect(obj.rect) and
+            if (self.collision_rect.colliderect(obj.rect) and
                     obj.__class__.__name__ == "HorizontalWall"):
                 self.do_dash = False
-                if (abs(self.rect.y - obj.rect.y) >
-                        abs(self.rect.y + self.rect.width - obj.rect.y)):
+                if (abs(self.collision_rect.y - obj.rect.y) >
+                        abs(self.collision_rect.y + self.collision_rect.height - obj.rect.y)):
                     self.rect.y -= self.default_speed
                 else:
                     self.rect.y += self.default_speed

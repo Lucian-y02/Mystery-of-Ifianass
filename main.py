@@ -10,6 +10,7 @@ class Scene:
     def __init__(self, **kwargs):
         self.screen = pygame.display.set_mode(kwargs.get("size", (1280, 1024)), pygame.FULLSCREEN)
         self.background_color = kwargs.get("background_color", (27, 29, 31))  # Цвет фона
+        self.background_image = pygame.image.load("level0.png").convert_alpha()
         # Группы спрайтов
         self.groups_data = {
             "player": pygame.sprite.Group(),  # Игрок
@@ -52,6 +53,7 @@ class Scene:
 
     def draw(self):
         self.screen.fill(self.background_color)
+        self.screen.blit(self.background_image, (0, 0))
         for key in self.groups_data:
             self.groups_data[key].draw(self.screen)
         if self.draw_grid:
