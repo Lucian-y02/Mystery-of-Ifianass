@@ -1,8 +1,6 @@
 import sys
 
-import pygame
-
-from level_editor import load_level
+from Mystery_Editor import level_updater
 from enemies import *
 
 
@@ -10,7 +8,6 @@ class Scene:
     def __init__(self, **kwargs):
         self.screen = pygame.display.set_mode(kwargs.get("size", (1280, 1024)), pygame.FULLSCREEN)
         self.background_color = kwargs.get("background_color", (27, 29, 31))  # Цвет фона
-        self.background_image = pygame.image.load("level0.png").convert_alpha()
         # Группы спрайтов
         self.groups_data = {
             "player": pygame.sprite.Group(),  # Игрок
@@ -27,9 +24,8 @@ class Scene:
 
         self.default_font = pygame.font.Font(None, 24)  # Стандартный шрифт
 
-    def play(self):
-        load_level("Levels/level_0.lvl", self.groups_data)
-        pygame.mouse.set_visible(False)
+    def play(self, m_visible=False):
+        pygame.mouse.set_visible(m_visible)
         while self.game_run:
             self.check_events()
             self.draw()
@@ -53,7 +49,6 @@ class Scene:
 
     def draw(self):
         self.screen.fill(self.background_color)
-        self.screen.blit(self.background_image, (0, 0))
         for key in self.groups_data:
             self.groups_data[key].draw(self.screen)
         if self.draw_grid:
@@ -67,9 +62,16 @@ class Scene:
             self.screen.blit(self.default_font.render(f"FPS {str(round(self.clock.get_fps()))}",
                                                       False, (200, 204, 194)), (20, 20))
 
+    def load_level(self, path):
+        for key in self.groups_data:
+            if key != "player":
+                self.groups_data[key].remove()
+        level_updater.load_level(path, self.groups_data)
+
 
 if __name__ == '__main__':
     pygame.init()
     scene = Scene()
+    scene.load_level("Levels/level_0.lvl")
 
     scene.play()

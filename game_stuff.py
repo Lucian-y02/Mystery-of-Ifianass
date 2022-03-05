@@ -151,3 +151,6 @@ class HealthPointsIndicator(pygame.sprite.Sprite):
                                                       self.max_health_points)), 0), 3))
         self.rect.x = self.user.rect.x - self.shift_horizontal
         self.rect.y = self.user.rect.y - self.shift_vertical
+
+
+available_objects = ["b"]

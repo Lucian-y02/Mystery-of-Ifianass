@@ -165,6 +165,7 @@ class Player(pygame.sprite.Sprite):
                 else:
                     self.rect.x -= self.default_speed
                 self.move_x = 0
+                break
             if (self.collision_rect.colliderect(obj.rect) and
                     obj.__class__.__name__ == "HorizontalWall"):
                 self.do_dash = False
@@ -174,6 +175,7 @@ class Player(pygame.sprite.Sprite):
                 else:
                     self.rect.y += self.default_speed
                 self.move_y = 0
+                break
 
     # Таймер, по истечению которого можно провести следующую атаку
     def chop_timer_reloading(self):
