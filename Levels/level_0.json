@@ -1,0 +1,6 @@
+{
+  "64 64": ["Player", "all_the_groups", {
+    "control_function": "game_pad"
+  }],
+  "192 192": ["Box", "game_stuff", {}]
+}

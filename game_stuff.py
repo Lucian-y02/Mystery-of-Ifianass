@@ -13,7 +13,7 @@ pygame.init()
 class VerticalWall(pygame.sprite.Sprite):
     def __init__(self, group, coord):
         super(VerticalWall, self).__init__(group)
-        self.shift = constants.wall_shift
+        self.shift = constants.WALL_SHIFT
         self.image = pygame.Surface((1, 64 - self.shift * 2))
         self.image.fill((200, 204, 194))
         self.rect = self.image.get_rect()
@@ -25,7 +25,7 @@ class VerticalWall(pygame.sprite.Sprite):
 class HorizontalWall(pygame.sprite.Sprite):
     def __init__(self, group, coord):
         super(HorizontalWall, self).__init__(group)
-        self.shift = constants.wall_shift
+        self.shift = constants.WALL_SHIFT
         self.image = pygame.Surface((64 - self.shift * 2, 1))
         self.image.fill((200, 204, 194))
         self.rect = self.image.get_rect()
@@ -151,6 +151,3 @@ class HealthPointsIndicator(pygame.sprite.Sprite):
                                                       self.max_health_points)), 0), 3))
         self.rect.x = self.user.rect.x - self.shift_horizontal
         self.rect.y = self.user.rect.y - self.shift_vertical
-
-
-available_objects = ["b"]
