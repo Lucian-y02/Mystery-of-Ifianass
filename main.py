@@ -49,22 +49,25 @@ class Scene:
 
     def draw(self):
         self.screen.fill(self.background_color)
-        for key in self.groups_data:
-            self.groups_data[key].draw(self.screen)
         if self.draw_grid:
             for x in range(self.screen.get_width() // 64 + 1):
-                pygame.draw.line(self.screen, (200, 204, 194),
+                pygame.draw.line(self.screen, (50, 54, 44),
                                  (64 * x, 0), (64 * x, self.screen.get_height()))
             for y in range(self.screen.get_height() // 64):
-                pygame.draw.line(self.screen, (200, 204, 194),
+                pygame.draw.line(self.screen, (50, 54, 44),
                                  (0, 64 * y), (self.screen.get_width(), 64 * y))
+        for key in self.groups_data:
+            self.groups_data[key].draw(self.screen)
         if self.fps_show:
             self.screen.blit(self.default_font.render(f"FPS {str(round(self.clock.get_fps()))}",
                                                       False, (200, 204, 194)), (20, 20))
 
-    def load_level_on_scene(self, path):
+    def clear_groups_data(self):
         for key in self.groups_data:
-            self.groups_data[key].remove()
+            self.groups_data[key].remove(self.groups_data[key])
+
+    def load_level_on_scene(self, path):
+        self.clear_groups_data()
         level_updater.load_level(path, self.groups_data)
 
 

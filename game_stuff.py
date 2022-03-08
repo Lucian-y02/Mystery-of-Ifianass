@@ -127,18 +127,19 @@ class Chop(pygame.sprite.Sprite):
 # Индикатор здоровья
 class HealthPointsIndicator(pygame.sprite.Sprite):
     def __init__(self, group, user, **kwargs):
+        print("ok")
         super(HealthPointsIndicator, self).__init__(group)
         self.user = user
 
         self.shift_horizontal = kwargs.get("shift_horizontal", 0)
-        self.shift_vertical = kwargs.get("shift_vertical", 6)
+        self.shift_vertical = kwargs.get("shift_vertical", -4)
 
         self.image = pygame.Surface(kwargs.get("size", (64, 4)))
         self.image.fill(kwargs.get("color", (200, 204, 194)))
         self.rect = self.image.get_rect()
 
-        self.rect.x = self.rect.x + self.shift_horizontal
-        self.rect.y = self.rect.y + self.shift_vertical
+        self.rect.x = self.user.rect.x + self.shift_horizontal
+        self.rect.y = self.user.rect.y + self.shift_vertical - self.rect.height
 
         self.max_health_points = user.max_health_points
 

@@ -11,9 +11,9 @@ pygame.init()
 
 # Противник
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, groups: dict, coord, target, size=(38, 42), max_health_points=100):
+    def __init__(self, groups: dict, coord, **kwargs):
         super(Enemy, self).__init__(groups["enemies"])
-        self.image = pygame.Surface(size)
+        self.image = pygame.Surface(kwargs.get("size", (38, 42)))
         self.image.fill((200, 204, 194))
         self.rect = self.image.get_rect()
         self.rect.x = coord[0] + 13
@@ -22,11 +22,13 @@ class Enemy(pygame.sprite.Sprite):
         self.groups_data = groups
 
         # Характеристики
-        self.max_health_points = max_health_points  # Максимальео количество здоровья
+        # Максимальео количество здоровья
+        self.max_health_points = kwargs.get("max_health_points", 100)
         self.health_points = self.max_health_points
-        self.target_list = [target]  # Список возможных целей
-        self.target = target  # Цель
+        self.target_list = [kwargs.get("target", None)]  # Список возможных целей
+        self.target = self.target_list[0]  # Цель
         HealthPointsIndicator(groups["game_stuff"], self, size=(self.rect.width, 4))
+        print("ok")
 
     def update(self):
         if self.health_points <= 0:

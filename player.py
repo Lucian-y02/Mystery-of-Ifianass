@@ -46,7 +46,7 @@ class Player(pygame.sprite.Sprite):
             "keyboard": self.keyboard_check_pressing,
             "game_pad": self.game_pad_check_pressing
         }
-        self.control_function = self.control_data[kwargs.get("control_function", "keyboard")]
+        self.control_function = self.control_data[kwargs.get("control_function", "game_pad")]
 
         self.pointer = Pointer(self.groups_data["game_stuff"], self)  # Указатель
 
