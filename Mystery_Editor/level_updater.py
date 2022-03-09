@@ -10,7 +10,14 @@ pygame.init()
 
 available_objects = {
     "Player": [Player, "all_the_groups"], "Box": [Box, "game_stuff"],
-    "Enemy": [Enemy, "all_the_groups"]
+    "NorthWall": [NorthWall, "game_stuff"],
+    "SouthWall": [SouthWall, "game_stuff"],
+    "WesternWall": [WesternWall, "game_stuff"],
+    "EastWall": [EastWall, "game_stuff"],
+    "TopLeftCorner": [TopLeftCorner, "game_stuff"],
+    "TopRightCorner": [TopRightCorner, "game_stuff"],
+    "DownLeftCorner": [DownLeftCorner, "game_stuff"],
+    "DownRightCorner": [DownRightCorner, "game_stuff"]
 }
 
 

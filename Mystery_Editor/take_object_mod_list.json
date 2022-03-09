@@ -7,8 +7,36 @@
     "Player",
     {"control_function": "game_pad"}
   ],
-  "5 1": [
-    "Enemy",
+  "2 3": [
+    "NorthWall",
+    {}
+  ],
+  "2 5": [
+    "SouthWall",
+    {}
+  ],
+  "1 4": [
+    "WesternWall",
+    {}
+  ],
+  "3 4": [
+    "EastWall",
+    {}
+  ],
+  "1 3": [
+    "TopLeftCorner",
+    {}
+  ],
+  "3 3": [
+    "TopRightCorner",
+    {}
+  ],
+  "1 5": [
+    "DownLeftCorner",
+    {}
+  ],
+  "3 5": [
+    "DownRightCorner",
     {}
   ]
 }

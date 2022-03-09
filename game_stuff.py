@@ -41,6 +41,58 @@ class Box:
         VerticalWall(group, (coord[0] + 64, coord[1]))
 
 
+# Северная стена
+class NorthWall:
+    def __init__(self, group, coord):
+        HorizontalWall(group, (coord[0], coord[1] - 1))
+
+
+# Южная стена
+class SouthWall:
+    def __init__(self, group, coord):
+        HorizontalWall(group, (coord[0], coord[1] + 64))
+
+
+# Западная стена
+class WesternWall:
+    def __init__(self, group, coord):
+        VerticalWall(group, (coord[0] - 1, coord[1]))
+
+
+# Восточная стена
+class EastWall:
+    def __init__(self, group, coord):
+        VerticalWall(group, (coord[0] + 64, coord[1]))
+
+
+# Верхний левый угол
+class TopLeftCorner:
+    def __init__(self, group, coord):
+        HorizontalWall(group, (coord[0], coord[1] - 1))
+        VerticalWall(group, (coord[0] - 1, coord[1]))
+
+
+# Верхний правый угол
+class TopRightCorner:
+    def __init__(self, group, coord):
+        HorizontalWall(group, (coord[0], coord[1] - 1))
+        VerticalWall(group, (coord[0] + 64, coord[1]))
+
+
+# Нижний левый угол
+class DownLeftCorner:
+    def __init__(self, group, coord):
+        HorizontalWall(group, (coord[0], coord[1] + 64))
+        VerticalWall(group, (coord[0] - 1, coord[1]))
+
+
+# Нижний правый угол
+class DownRightCorner:
+    def __init__(self, group, coord):
+        HorizontalWall(group, (coord[0], coord[1] + 64))
+        VerticalWall(group, (coord[0] + 64, coord[1]))
+
+
 # Указатель
 class Pointer(pygame.sprite.Sprite):
     def __init__(self, group, user, size=(16, 20)):

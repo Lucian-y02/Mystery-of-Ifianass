@@ -155,27 +155,55 @@ class Player(pygame.sprite.Sprite):
 
     # Столкновения
     def check_collision(self):
+        collision_vertical_wall = False
+        collision_horizontal_wall = False
+        obj_x = None
+        obj_y = None
+        # for obj in self.groups_data["game_stuff"]:
+        #     if (self.collision_rect.colliderect(obj.rect) and
+        #             obj.__class__.__name__ == "VerticalWall"):
+        #         self.do_dash = False
+        #         if (abs(self.collision_rect.x + self.collision_rect.width - obj.rect.x) >
+        #                 abs(self.collision_rect.x - obj.rect.x)):
+        #             self.rect.x += self.default_speed
+        #         else:
+        #             self.rect.x -= self.default_speed
+        #         self.move_x = 0
+        #     if (self.collision_rect.colliderect(obj.rect) and
+        #             obj.__class__.__name__ == "HorizontalWall"):
+        #         self.do_dash = False
+        #         if (abs(self.collision_rect.y - obj.rect.y) >
+        #                 abs(self.collision_rect.y + self.collision_rect.height - obj.rect.y)):
+        #             self.rect.y -= self.default_speed
+        #         else:
+        #             self.rect.y += self.default_speed
+        #         self.move_y = 0
         for obj in self.groups_data["game_stuff"]:
             if (self.collision_rect.colliderect(obj.rect) and
                     obj.__class__.__name__ == "VerticalWall"):
-                self.do_dash = False
-                if (abs(self.collision_rect.x + self.collision_rect.width - obj.rect.x) >
-                        abs(self.collision_rect.x - obj.rect.x)):
-                    self.rect.x += self.default_speed
-                else:
-                    self.rect.x -= self.default_speed
-                self.move_x = 0
-                break
+                collision_vertical_wall = True
+                obj_x = obj.rect.x
             if (self.collision_rect.colliderect(obj.rect) and
                     obj.__class__.__name__ == "HorizontalWall"):
-                self.do_dash = False
-                if (abs(self.collision_rect.y - obj.rect.y) >
-                        abs(self.collision_rect.y + self.collision_rect.height - obj.rect.y)):
-                    self.rect.y -= self.default_speed
-                else:
-                    self.rect.y += self.default_speed
-                self.move_y = 0
-                break
+                collision_horizontal_wall = True
+                obj_y = obj.rect.y
+
+        if collision_vertical_wall:
+            self.do_dash = False
+            if (abs(self.collision_rect.x + self.collision_rect.width - obj_x) >
+                    abs(self.collision_rect.x - obj_x)):
+                self.rect.x += self.default_speed
+            else:
+                self.rect.x -= self.default_speed
+            self.move_x = 0
+        if collision_horizontal_wall:
+            self.do_dash = False
+            if (abs(self.collision_rect.y - obj_y) >
+                    abs(self.collision_rect.y + self.collision_rect.height - obj_y)):
+                self.rect.y -= self.default_speed
+            else:
+                self.rect.y += self.default_speed
+            self.move_y = 0
 
     # Таймер, по истечению которого можно провести следующую атаку
     def chop_timer_reloading(self):
