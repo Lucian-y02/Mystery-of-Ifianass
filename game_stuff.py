@@ -11,10 +11,10 @@ pygame.init()
 
 # Базовая вертикальная стена
 class VerticalWall(pygame.sprite.Sprite):
-    def __init__(self, group, coord):
+    def __init__(self, group, coord, **kwargs):
         super(VerticalWall, self).__init__(group)
-        self.shift = constants.WALL_SHIFT
-        self.image = pygame.Surface((1, 64 - self.shift * 2))
+        self.shift = kwargs.get("shift", constants.WALL_SHIFT)
+        self.image = pygame.Surface(kwargs.get("size", (1, 64 - self.shift * 2)))
         self.image.fill((200, 204, 194))
         self.rect = self.image.get_rect()
         self.rect.x = coord[0]
@@ -23,10 +23,10 @@ class VerticalWall(pygame.sprite.Sprite):
 
 # Базовая горизонтальная стена
 class HorizontalWall(pygame.sprite.Sprite):
-    def __init__(self, group, coord):
+    def __init__(self, group, coord, **kwargs):
         super(HorizontalWall, self).__init__(group)
-        self.shift = constants.WALL_SHIFT
-        self.image = pygame.Surface((64 - self.shift * 2, 1))
+        self.shift = kwargs.get("shift", constants.WALL_SHIFT)
+        self.image = pygame.Surface(kwargs.get("size", (64 - self.shift * 2, 1)))
         self.image.fill((200, 204, 194))
         self.rect = self.image.get_rect()
         self.rect.x = coord[0] + self.shift
@@ -91,6 +91,52 @@ class DownRightCorner:
     def __init__(self, group, coord):
         HorizontalWall(group, (coord[0], coord[1] + 64))
         VerticalWall(group, (coord[0] + 64, coord[1]))
+
+
+# Середина горизонтальной платформы в 1 блок
+class MiddleHorizontalPlatform:
+    def __init__(self, group, coord):
+        HorizontalWall(group, (coord[0], coord[1] - 1))
+        HorizontalWall(group, (coord[0], coord[1] + 64))
+
+
+# Западный конец горизонтальной платформы в 1 блок
+class WesternHorizontalPlatform:
+    def __init__(self, group, coord):
+        HorizontalWall(group, (coord[0], coord[1] - 1))
+        HorizontalWall(group, (coord[0], coord[1] + 64))
+        VerticalWall(group, (coord[0] - 1, coord[1]))
+
+
+# Восточный конец горизонтальной платформы в 1 блок
+class EastHorizontalPlatform:
+    def __init__(self, group, coord):
+        HorizontalWall(group, (coord[0], coord[1] - 1))
+        HorizontalWall(group, (coord[0], coord[1] + 64))
+        VerticalWall(group, (coord[0] + 64, coord[1]))
+
+
+# Середина вертикальной платформы в 1 блок
+class MiddleVerticalPlatform:
+    def __init__(self, group, coord):
+        VerticalWall(group, (coord[0] - 1, coord[1]))
+        VerticalWall(group, (coord[0] + 64, coord[1]))
+
+
+# Северный конец горизонтальной платформы в 1 блок
+class NorthVerticalPlatform:
+    def __init__(self, group, coord):
+        HorizontalWall(group, (coord[0], coord[1] - 1))
+        VerticalWall(group, (coord[0] - 1, coord[1]))
+        VerticalWall(group, (coord[0] + 64, coord[1]))
+
+
+# Южный конец горизонтальной платформы в 1 блок
+class SouthVerticalPlatform:
+    def __init__(self, group, coord):
+        HorizontalWall(group, (coord[0], coord[1] + 64))
+        VerticalWall(group, (coord[0] + 64, coord[1]))
+        VerticalWall(group, (coord[0] - 1, coord[1]))
 
 
 # Указатель
@@ -204,3 +250,119 @@ class HealthPointsIndicator(pygame.sprite.Sprite):
                                                       self.max_health_points)), 0), 3))
         self.rect.x = self.user.rect.x - self.shift_horizontal
         self.rect.y = self.user.rect.y - self.shift_vertical
+
+
+# Зона поражения (пропасть, море и т.д.)
+class KillZone(pygame.sprite.Sprite):
+    def __init__(self, group, coord, **kwargs):
+        super(KillZone, self).__init__(group)
+        self.image = pygame.Surface(kwargs.get("size", (64, 64)))
+        self.image.fill((150, 29, 31))
+        self.image.set_alpha(50)
+        self.rect = self.image.get_rect()
+        self.rect.x = coord[0] + kwargs.get("shift_x", 0)
+        self.rect.y = coord[1] + kwargs.get("shift_y", 0)
+
+
+# Западная сторона зоны поражения
+class WesternKillZone(KillZone):
+    def __init__(self, group, coord):
+        super(WesternKillZone, self).__init__(group, coord, size=(40, 64),
+                                              shift_x=24)
+
+
+# Восточная сторона зоны поражения
+class EastKillZone(KillZone):
+    def __init__(self, group, coord):
+        super(EastKillZone, self).__init__(group, coord, size=(40, 64))
+
+
+# Северная сторона зоны поражения
+class NorthKillZone(KillZone):
+    def __init__(self, group, coord):
+        super(NorthKillZone, self).__init__(group, coord, size=(64, 40),
+                                            shift_y=24)
+
+
+# Южная сторона зоны поражения
+class SouthKillZone(KillZone):
+    def __init__(self, group, coord):
+        super(SouthKillZone, self).__init__(group, coord, size=(64, 40))
+
+
+# Верхний левый угол зоны поражения
+class TopLeftKillZoneCorner(KillZone):
+    def __init__(self, group, coord):
+        super(TopLeftKillZoneCorner, self).__init__(group, coord, size=(40, 40),
+                                                    shift_x=24, shift_y=24)
+
+
+# Нижний левый угол зоны поражения
+class DownLeftKillZoneCorner(KillZone):
+    def __init__(self, group, coord):
+        super(DownLeftKillZoneCorner, self).__init__(group, coord, size=(40, 40),
+                                                     shift_x=24)
+
+
+# Верхний правый угол зоны поражения
+class TopRightKillZoneCorner(KillZone):
+    def __init__(self, group, coord):
+        super(TopRightKillZoneCorner, self).__init__(group, coord, size=(40, 40),
+                                                     shift_y=24)
+
+
+# Нижний правый угол зоны поражения
+class DownRightKillZoneCorner(KillZone):
+    def __init__(self, group, coord):
+        super(DownRightKillZoneCorner, self).__init__(group, coord, size=(40, 40))
+
+
+class VerticalSingleKillZone(KillZone):
+    def __init__(self, group, coord):
+        super(VerticalSingleKillZone, self).__init__(group, coord, size=(16, 64),
+                                                     shift_x=24)
+
+
+class HorizontalSingleKillZone(KillZone):
+    def __init__(self, group, coord):
+        super(HorizontalSingleKillZone, self).__init__(group, coord, size=(64, 16),
+                                                       shift_y=24)
+
+
+class SingleKillZoneCorner(KillZone):
+    def __init__(self, group, coord):
+        super(SingleKillZoneCorner, self).__init__(group, coord, size=(16, 16),
+                                                   shift_x=24, shift_y=24)
+
+
+# Передвижной объект
+class MobileObject(pygame.sprite.Sprite):
+    def __init__(self, groups: dict, coord, **kwargs):
+        super(MobileObject, self).__init__(groups["game_stuff"])
+        self.shift = kwargs.get("shift", constants.WALL_SHIFT)
+        self.image = pygame.Surface(kwargs.get("size", (32, 32)))
+        self.image.fill((27, 29, 100))
+        self.rect = self.image.get_rect()
+        self.rect.x = coord[0] + (64 - self.rect.width) // 2
+        self.rect.y = coord[1] + (64 - self.rect.height) // 2
+
+        self.groups_data = groups
+
+    def update(self):
+        self.check_collision()
+
+    def check_collision(self):
+        # Столкновение со стенами
+        for wall in self.groups_data["walls"]:
+            if (self.rect.colliderect(wall.rect) and
+                    wall.__class__.__name__ == "HorizontalWall"):
+                pass
+            if (self.rect.colliderect(wall.rect) and
+                    wall.__class__.__name__ == "VerticalWall"):
+                pass
+
+        # Столкновение с другими игровыми объектами
+        for obj in self.groups_data["game_stuff"]:
+            if (self.rect.colliderect(obj.rect) and
+                    obj.__class__.__name__ == "KillZone"):
+                self.kill()

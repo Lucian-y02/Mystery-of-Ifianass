@@ -52,7 +52,6 @@ class LevelEditorScene(Scene):
                     self.update_level("created_level.json")
                 elif event.key == pygame.K_TAB:  # Выбор объекта
                     self.take_object_mod = not self.take_object_mod
-                    self.draw_grid = not self.draw_grid
                     if self.take_object_mod:
                         self.load_level_on_scene("take_object_mod_list.json")
                     else:

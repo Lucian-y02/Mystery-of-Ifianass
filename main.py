@@ -10,10 +10,12 @@ class Scene:
         self.background_color = kwargs.get("background_color", (27, 29, 31))  # Цвет фона
         # Группы спрайтов
         self.groups_data = {
-            "player": pygame.sprite.Group(),  # Игрок
-            "player_chops": pygame.sprite.Group(),  # Удары игрока
+            "walls": pygame.sprite.Group(),  # Стены (должны быть невидимыми)
+            "kill_zones": pygame.sprite.Group(),  # Зоны поражения
             "enemies": pygame.sprite.Group(),  # Проитвники
-            "game_stuff": pygame.sprite.Group()  # Различные игровые объекты
+            "game_stuff": pygame.sprite.Group(),  # Различные игровые объекты
+            "player": pygame.sprite.Group(),  # Игрок
+            "player_chops": pygame.sprite.Group()  # Удары игрока
         }
         self.clock = pygame.time.Clock()
         self.FPS = kwargs.get("FPS", 60)

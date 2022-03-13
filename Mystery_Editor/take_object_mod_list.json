@@ -38,5 +38,81 @@
   "3 5": [
     "DownRightCorner",
     {}
+  ],
+  "1 7": [
+    "WesternHorizontalPlatform",
+    {}
+  ],
+  "2 7": [
+    "MiddleHorizontalPlatform",
+    {}
+  ],
+  "3 7": [
+    "EastHorizontalPlatform",
+    {}
+  ],
+  "5 3": [
+    "NorthVerticalPlatform",
+    {}
+  ],
+  "5 4": [
+    "MiddleVerticalPlatform",
+    {}
+  ],
+  "5 5": [
+    "SouthVerticalPlatform",
+    {}
+  ],
+  "3 9": [
+    "MobileObject",
+    {}
+  ],
+  "8 4": [
+    "KillZone",
+    {}
+  ],
+  "7 4": [
+    "WesternKillZone",
+    {}
+  ],
+  "9 4": [
+    "EastKillZone",
+    {}
+  ],
+  "8 3": [
+    "NorthKillZone",
+    {}
+  ],
+  "8 5": [
+    "SouthKillZone",
+    {}
+  ],
+  "7 3": [
+    "TopLeftKillZoneCorner",
+    {}
+  ],
+  "7 5": [
+    "DownLeftKillZoneCorner",
+    {}
+  ],
+  "9 3": [
+    "TopRightKillZoneCorner",
+    {}
+  ],
+  "9 5": [
+    "DownRightKillZoneCorner",
+    {}
+  ],
+  "11 4": [
+    "HorizontalSingleKillZone",
+    {}
+  ],
+  "11 3": [
+    "SingleKillZoneCorner",
+    {}
+  ],
+  "11 5": [
+    "VerticalSingleKillZone",
+    {}
   ]
 }

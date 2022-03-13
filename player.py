@@ -21,7 +21,7 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = coord[0] + 12
         self.rect.y = coord[1]
-        # Rectangle для считывания столкновений
+        # Rectangle для считывания столкновений со стенами
         self.collision_rect = pygame.rect.Rect(
             (self.rect.x, self.rect.y + self.rect.height // 2,
              self.rect.width, self.rect.height // 2))
@@ -36,6 +36,7 @@ class Player(pygame.sprite.Sprite):
         # Характеристики
         self.default_speed = constants.player_speed
         self.speed = self.default_speed
+        self.respawn_coord = coord
 
         # Перемещение
         self.move_x = 0
@@ -48,6 +49,7 @@ class Player(pygame.sprite.Sprite):
         }
         self.control_function = self.control_data[kwargs.get("control_function", "game_pad")]
 
+        # Указатель
         self.pointer = Pointer(self.groups_data["game_stuff"], self)  # Указатель
 
         # Атака
@@ -70,6 +72,7 @@ class Player(pygame.sprite.Sprite):
 
         # Рывок
         if self.do_dash:
+            self.pointer.side_update(self.pointer.side)
             if self.pointer.side == "UP":
                 self.move_y -= self.default_speed * 2
             elif self.pointer.side == "DOWN":
@@ -159,26 +162,8 @@ class Player(pygame.sprite.Sprite):
         collision_horizontal_wall = False
         obj_x = None
         obj_y = None
-        # for obj in self.groups_data["game_stuff"]:
-        #     if (self.collision_rect.colliderect(obj.rect) and
-        #             obj.__class__.__name__ == "VerticalWall"):
-        #         self.do_dash = False
-        #         if (abs(self.collision_rect.x + self.collision_rect.width - obj.rect.x) >
-        #                 abs(self.collision_rect.x - obj.rect.x)):
-        #             self.rect.x += self.default_speed
-        #         else:
-        #             self.rect.x -= self.default_speed
-        #         self.move_x = 0
-        #     if (self.collision_rect.colliderect(obj.rect) and
-        #             obj.__class__.__name__ == "HorizontalWall"):
-        #         self.do_dash = False
-        #         if (abs(self.collision_rect.y - obj.rect.y) >
-        #                 abs(self.collision_rect.y + self.collision_rect.height - obj.rect.y)):
-        #             self.rect.y -= self.default_speed
-        #         else:
-        #             self.rect.y += self.default_speed
-        #         self.move_y = 0
-        for obj in self.groups_data["game_stuff"]:
+        # Столкновение со стенами
+        for obj in self.groups_data["walls"]:
             if (self.collision_rect.colliderect(obj.rect) and
                     obj.__class__.__name__ == "VerticalWall"):
                 collision_vertical_wall = True
@@ -188,6 +173,18 @@ class Player(pygame.sprite.Sprite):
                 collision_horizontal_wall = True
                 obj_y = obj.rect.y
 
+        for kill_zone in self.groups_data["kill_zones"]:
+            if self.collision_rect.colliderect(kill_zone.rect) and not self.do_dash:
+                self.rect.x = self.respawn_coord[0]
+                self.rect.y = self.respawn_coord[1]
+
+        # Столкновение с другими игровыми объектами
+        for obj in self.groups_data["game_stuff"]:
+            if (self.collision_rect.colliderect(obj.rect) and
+                    obj.__class__.__name__ == "MobileObject"):
+                obj.rect.move_ip(self.move_x, self.move_y)
+
+        # Столкновение со стенами
         if collision_vertical_wall:
             self.do_dash = False
             if (abs(self.collision_rect.x + self.collision_rect.width - obj_x) >
