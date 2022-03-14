@@ -1,38 +1,94 @@
 {
-  "3 3": [
-    "TopLeftCorner",
+  "17 4": [
+    "EastWall",
     {}
   ],
-  "4 3": [
-    "NorthWall",
+  "17 5": [
+    "EastWall",
     {}
   ],
-  "5 3": [
-    "VerticalSingleKillZone",
+  "17 6": [
+    "EastWall",
     {}
   ],
-  "6 3": [
-    "NorthWall",
+  "17 7": [
+    "EastWall",
+    {}
+  ],
+  "17 8": [
+    "EastWall",
     {}
   ],
   "17 3": [
+    "EastWall",
+    {}
+  ],
+  "17 9": [
+    "DownRightCorner",
+    {}
+  ],
+  "17 2": [
     "TopRightCorner",
     {}
   ],
-  "16 3": [
+  "16 2": [
     "NorthWall",
     {}
   ],
-  "15 3": [
+  "15 2": [
     "NorthWall",
     {}
   ],
-  "14 3": [
+  "14 2": [
     "NorthWall",
     {}
   ],
-  "3 8": [
-    "DownLeftCorner",
+  "13 2": [
+    "NorthWall",
+    {}
+  ],
+  "12 2": [
+    "NorthWall",
+    {}
+  ],
+  "11 2": [
+    "NorthWall",
+    {}
+  ],
+  "16 9": [
+    "SouthWall",
+    {}
+  ],
+  "15 9": [
+    "SouthWall",
+    {}
+  ],
+  "14 9": [
+    "SouthWall",
+    {}
+  ],
+  "13 9": [
+    "SouthWall",
+    {}
+  ],
+  "12 9": [
+    "SouthWall",
+    {}
+  ],
+  "10 9": [
+    "MiddleVerticalPlatform",
+    {}
+  ],
+  "10 2": [
+    "MiddleVerticalPlatform",
+    {}
+  ],
+  "11 9": [
+    "SouthWall",
+    {}
+  ],
+  "3 3": [
+    "WesternWall",
     {}
   ],
   "3 4": [
@@ -51,236 +107,96 @@
     "WesternWall",
     {}
   ],
-  "4 8": [
-    "SouthWall",
-    {}
-  ],
-  "5 8": [
-    "VerticalSingleKillZone",
-    {}
-  ],
-  "6 8": [
-    "SouthWall",
-    {}
-  ],
-  "14 8": [
-    "SouthWall",
-    {}
-  ],
-  "15 8": [
-    "SouthWall",
-    {}
-  ],
-  "16 8": [
-    "SouthWall",
-    {}
-  ],
-  "17 8": [
-    "DownRightCorner",
-    {}
-  ],
-  "17 7": [
-    "EastWall",
-    {}
-  ],
-  "17 6": [
-    "EastWall",
-    {}
-  ],
-  "17 5": [
-    "EastWall",
-    {}
-  ],
-  "17 4": [
-    "EastWall",
-    {}
-  ],
-  "7 3": [
-    "WesternKillZone",
-    {}
-  ],
-  "7 4": [
-    "WesternKillZone",
-    {}
-  ],
-  "7 5": [
-    "WesternKillZone",
-    {}
-  ],
-  "7 6": [
-    "WesternKillZone",
-    {}
-  ],
-  "7 7": [
-    "WesternKillZone",
-    {}
-  ],
-  "7 8": [
-    "WesternKillZone",
-    {}
-  ],
-  "8 4": [
-    "EastKillZone",
-    {}
-  ],
-  "8 5": [
-    "EastKillZone",
-    {}
-  ],
-  "8 3": [
-    "EastKillZone",
-    {}
-  ],
-  "8 6": [
-    "EastKillZone",
-    {}
-  ],
-  "8 7": [
-    "EastKillZone",
-    {}
-  ],
-  "8 8": [
-    "EastKillZone",
-    {}
-  ],
-  "12 3": [
-    "WesternKillZone",
-    {}
-  ],
-  "12 4": [
-    "WesternKillZone",
-    {}
-  ],
-  "12 5": [
-    "WesternKillZone",
-    {}
-  ],
-  "12 6": [
-    "WesternKillZone",
-    {}
-  ],
-  "12 7": [
-    "WesternKillZone",
-    {}
-  ],
-  "12 8": [
-    "WesternKillZone",
-    {}
-  ],
-  "13 3": [
-    "EastKillZone",
-    {}
-  ],
-  "13 4": [
-    "EastKillZone",
-    {}
-  ],
-  "13 5": [
-    "EastKillZone",
-    {}
-  ],
-  "13 6": [
-    "EastKillZone",
-    {}
-  ],
-  "13 7": [
-    "EastKillZone",
-    {}
-  ],
-  "13 8": [
-    "EastKillZone",
-    {}
-  ],
-  "9 3": [
-    "NorthWall",
+  "3 8": [
+    "WesternWall",
     {}
   ],
   "10 3": [
-    "NorthWall",
-    {}
-  ],
-  "11 3": [
-    "NorthWall",
-    {}
-  ],
-  "9 8": [
-    "SouthWall",
+    "MiddleVerticalPlatform",
     {}
   ],
   "10 8": [
-    "SouthWall",
+    "MiddleVerticalPlatform",
     {}
   ],
-  "11 8": [
-    "SouthWall",
-    {}
-  ],
-  "10 5": [
+  "10 7": [
     "NorthVerticalPlatform",
     {}
   ],
-  "10 6": [
+  "10 4": [
     "SouthVerticalPlatform",
     {}
   ],
-  "7 2": [
-    "WesternHorizontalPlatform",
+  "10 6": [
+    "VerticalLockedDoor",
     {}
   ],
-  "12 2": [
-    "WesternHorizontalPlatform",
-    {}
-  ],
-  "7 9": [
-    "WesternHorizontalPlatform",
-    {}
-  ],
-  "12 9": [
-    "WesternHorizontalPlatform",
-    {}
-  ],
-  "8 9": [
-    "EastHorizontalPlatform",
-    {}
-  ],
-  "13 9": [
-    "EastHorizontalPlatform",
-    {}
-  ],
-  "13 2": [
-    "EastHorizontalPlatform",
-    {}
-  ],
-  "8 2": [
-    "EastHorizontalPlatform",
+  "10 5": [
+    "VerticalLockedDoor",
     {}
   ],
   "4 4": [
     "Player",
     {}
   ],
-  "5 4": [
-    "VerticalSingleKillZone",
+  "9 2": [
+    "NorthWall",
     {}
   ],
-  "5 5": [
-    "VerticalSingleKillZone",
+  "8 2": [
+    "NorthWall",
     {}
   ],
-  "5 6": [
-    "VerticalSingleKillZone",
+  "7 2": [
+    "NorthWall",
     {}
   ],
-  "5 7": [
-    "VerticalSingleKillZone",
-    {}
-  ],
-  "5 9": [
-    "Box",
+  "6 2": [
+    "NorthWall",
     {}
   ],
   "5 2": [
-    "Box",
+    "NorthWall",
     {}
+  ],
+  "4 2": [
+    "NorthWall",
+    {}
+  ],
+  "3 2": [
+    "TopLeftCorner",
+    {}
+  ],
+  "9 9": [
+    "SouthWall",
+    {}
+  ],
+  "8 9": [
+    "SouthWall",
+    {}
+  ],
+  "7 9": [
+    "SouthWall",
+    {}
+  ],
+  "6 9": [
+    "SouthWall",
+    {}
+  ],
+  "5 9": [
+    "SouthWall",
+    {}
+  ],
+  "4 9": [
+    "SouthWall",
+    {}
+  ],
+  "3 9": [
+    "DownLeftCorner",
+    {}
+  ],
+  "9 8": [
+    "BrokenButton",
+    {"side": "RIGHT"}
   ]
 }

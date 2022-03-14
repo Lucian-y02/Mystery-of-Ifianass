@@ -36,9 +36,12 @@ available_objects = {
     "DownLeftKillZoneCorner": [DownLeftKillZoneCorner, "kill_zones"],
     "TopRightKillZoneCorner": [TopRightKillZoneCorner, "kill_zones"],
     "DownRightKillZoneCorner": [DownRightKillZoneCorner, "kill_zones"],
-    "VerticalSingleKillZone":[VerticalSingleKillZone, "kill_zones"],
+    "VerticalSingleKillZone": [VerticalSingleKillZone, "kill_zones"],
     "HorizontalSingleKillZone": [HorizontalSingleKillZone, "kill_zones"],
-    "SingleKillZoneCorner": [SingleKillZoneCorner, "kill_zones"]
+    "SingleKillZoneCorner": [SingleKillZoneCorner, "kill_zones"],
+    "HorizontalLockedDoor": [HorizontalLockedDoor, "all_the_groups"],
+    "VerticalLockedDoor": [VerticalLockedDoor, "all_the_groups"],
+    "BrokenButton": [BrokenButton, "all_the_groups"]
 }
 
 

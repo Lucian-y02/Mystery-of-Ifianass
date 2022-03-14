@@ -173,10 +173,13 @@ class Player(pygame.sprite.Sprite):
                 collision_horizontal_wall = True
                 obj_y = obj.rect.y
 
+        # Столкновение с зонами поражения
         for kill_zone in self.groups_data["kill_zones"]:
             if self.collision_rect.colliderect(kill_zone.rect) and not self.do_dash:
                 self.rect.x = self.respawn_coord[0]
                 self.rect.y = self.respawn_coord[1]
+                self.pointer.side_update(self.pointer.side)
+                self.groups_data["player_chops"].remove(self.groups_data["player_chops"])
 
         # Столкновение с другими игровыми объектами
         for obj in self.groups_data["game_stuff"]:

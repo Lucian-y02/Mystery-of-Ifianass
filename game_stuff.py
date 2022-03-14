@@ -366,3 +366,84 @@ class MobileObject(pygame.sprite.Sprite):
             if (self.rect.colliderect(obj.rect) and
                     obj.__class__.__name__ == "KillZone"):
                 self.kill()
+
+
+# Разбиваемая кнопка
+class BrokenButton(pygame.sprite.Sprite):
+    def __init__(self, groups: dict, coord, **kwargs):
+        super(BrokenButton, self).__init__(groups["game_stuff"])
+        if kwargs.get("side", "UP") == "UP" or kwargs.get("side", "UP") == "DOWN":
+            self.image = pygame.Surface(kwargs.get("size", (32, 16)))
+        else:
+            self.image = pygame.Surface(kwargs.get("size", (16, 32)))
+        self.image.fill((27, 29, 100))
+        self.rect = self.image.get_rect()
+        if kwargs.get("side", "UP") == "UP" or kwargs.get("side", "UP") == "DOWN":
+            self.rect.x = coord[0] + 16
+            self.rect.y = coord[1] + (48 if kwargs.get("side", "UP") == "DOWN" else 0)
+        elif kwargs.get("side", "UP") == "LEFT" or kwargs.get("side", "UP") == "RIGHT":
+            self.rect.x = coord[0] + (48 if kwargs.get("side", "UP") == "RIGHT" else 0)
+            self.rect.y = coord[1] + 16
+
+        # Список ударов игрока
+        self.chops_list = groups["player_chops"]
+
+        # Объекты, на которые влияет кнопка
+        self.doors_list = groups["doors"]
+        self.index = kwargs.get("index", "0")
+        """
+        Кнопка и открываемая ей дверь должны иметь одинаковый index
+        """
+
+    def update(self):
+        if pygame.sprite.spritecollideany(self, self.chops_list):
+            for door in self.doors_list:
+                if door.index == self.index:
+                    door.open_door()
+            self.kill()
+
+
+# Горизонтальная закрытая дверь
+class HorizontalLockedDoor(pygame.sprite.Sprite):
+    def __init__(self, groups: dict, coord, **kwargs):
+        super(HorizontalLockedDoor, self).__init__(groups["doors"])
+        self.image = pygame.Surface(kwargs.get("size", (64, 32)))
+        self.image.fill((200, 204, 194))
+        self.rect = self.image.get_rect()
+        self.rect.x = coord[0]
+        self.rect.y = coord[1] + (64 - self.rect.height) // 2
+
+        self.walls_list = [
+            HorizontalWall(groups["walls"], (self.rect.x, self.rect.y + self.rect.height - 1)),
+            HorizontalWall(groups["walls"], (self.rect.x, self.rect.y))
+        ]
+
+        self.index = kwargs.get("index", "0")
+
+    def open_door(self):
+        for wall in self.walls_list:
+            wall.kill()
+        self.kill()
+
+
+# Вертикальная закрытая дверь
+class VerticalLockedDoor(pygame.sprite.Sprite):
+    def __init__(self, groups: dict, coord, **kwargs):
+        super(VerticalLockedDoor, self).__init__(groups["doors"])
+        self.image = pygame.Surface(kwargs.get("size", (32, 64)))
+        self.image.fill((200, 204, 194))
+        self.rect = self.image.get_rect()
+        self.rect.x = coord[0] + (64 - self.rect.width) // 2
+        self.rect.y = coord[1]
+
+        self.walls_list = [
+            VerticalWall(groups["walls"], (self.rect.x, self.rect.y)),
+            VerticalWall(groups["walls"], (self.rect.x + self.rect.width - 1, self.rect.y))
+        ]
+
+        self.index = kwargs.get("index", "0")
+
+    def open_door(self):
+        for wall in self.walls_list:
+            wall.kill()
+        self.kill()

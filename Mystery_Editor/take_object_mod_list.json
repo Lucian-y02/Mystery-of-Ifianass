@@ -63,7 +63,7 @@
     "SouthVerticalPlatform",
     {}
   ],
-  "3 9": [
+  "5 7": [
     "MobileObject",
     {}
   ],
@@ -113,6 +113,18 @@
   ],
   "11 5": [
     "VerticalSingleKillZone",
+    {}
+  ],
+  "1 9": [
+    "VerticalLockedDoor",
+    {}
+  ],
+  "3 9": [
+    "HorizontalLockedDoor",
+    {}
+  ],
+  "5 9": [
+    "BrokenButton",
     {}
   ]
 }

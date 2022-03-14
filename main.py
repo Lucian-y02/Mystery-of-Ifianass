@@ -15,7 +15,8 @@ class Scene:
             "enemies": pygame.sprite.Group(),  # Проитвники
             "game_stuff": pygame.sprite.Group(),  # Различные игровые объекты
             "player": pygame.sprite.Group(),  # Игрок
-            "player_chops": pygame.sprite.Group()  # Удары игрока
+            "player_chops": pygame.sprite.Group(),  # Удары игрока
+            "doors": pygame.sprite.Group()  # Двери
         }
         self.clock = pygame.time.Clock()
         self.FPS = kwargs.get("FPS", 60)
