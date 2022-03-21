@@ -447,3 +447,105 @@ class VerticalLockedDoor(pygame.sprite.Sprite):
         for wall in self.walls_list:
             wall.kill()
         self.kill()
+
+
+# Пуля
+class Bullet(pygame.sprite.Sprite):
+    def __init__(self, groups: dict, coord, **kwargs):
+        super(Bullet, self).__init__(groups["game_stuff"])
+        size = kwargs.get("size", (26, 18))
+        self.side = kwargs.get("side", "UP")
+        self.image = pygame.Surface((size[0], size[1])
+                                    if self.side == "LEFT" or self.side == "RIGHT" else
+                                    (size[1], size[0]))
+        self.image.fill((150, 29, 31))
+        self.rect = self.image.get_rect()
+        self.rect.x = coord[0]
+        self.rect.y = coord[1]
+
+        # Список стен
+        self.walls_list = groups["walls"]
+
+        # Характеристики
+        self.speed = kwargs.get("speed", 3)  # Скорость
+        self.damage = kwargs.get("damage", 10)  # Урон
+        self.move_x = 0  # Передвижение по оси OX
+        self.move_y = 0  # Передвижение по оси OY
+
+        if self.side == "UP":
+            self.move_y = -self.speed
+        elif self.side == "DOWN":
+            self.move_y = self.speed
+        elif self.side == "LEFT":
+            self.move_x = -self.speed
+        else:
+            self.move_x = self.speed
+
+    def update(self):
+        if pygame.sprite.spritecollideany(self, self.walls_list):
+            self.kill()
+
+        self.rect.move_ip(self.move_x, self.move_y)
+
+
+# Пушка
+class Cannon(pygame.sprite.Sprite):
+    # [Класс, размер пули]
+    bullet_types = {"bullet": {"class": Bullet, "size": (26, 18)}
+                    }
+
+    def __init__(self, groups: dict, coord, **kwargs):
+        super(Cannon, self).__init__(groups["game_stuff"])
+        self.image = pygame.Surface((64, 64))
+        self.image.fill((150, 150, 150))
+        self.rect = self.image.get_rect()
+        self.rect.x = coord[0]
+        self.rect.y = coord[1]
+
+        self.groups_data = groups
+
+        Text(groups["game_stuff"], (self.rect.x + 3, self.rect.y + 24), "cannon")
+
+        # Характеристики
+        self.side = kwargs.get("side", "UP")  # Сторона, с которой будет производится выстрел
+        self.bullet_data = self.bullet_types[kwargs.get("bullet", "bullet")]  # Информация о пуле
+        self.bullet = self.bullet_data["class"] # Пуля
+        self.shot_cool_down = int(kwargs.get("shot_cool_down", "3"))  # Пауза между выстрелами
+        self.shot_ready = True  # Возможность сделать выстрел
+        # Координаты места выстрела
+        self.shot_x = self.rect.x
+        self.shot_y = self.rect.y
+
+        # Координаты выстрела === Доделать ===
+        if self.side == "UP":
+            self.shot_x += (self.rect.width - self.bullet_data["size"][1]) // 2
+        elif self.side == "DOWN":
+            self.shot_x += (self.rect.width - self.bullet_data["size"][1]) // 2
+            self.shot_y += self.rect.height - self.bullet_data["size"][0]
+        elif self.side == "LEFT":
+            self.shot_y += (self.rect.height - self.bullet_data["size"][1]) // 2
+        elif self.side == "RIGHT":
+            self.shot_y += (self.rect.height - self.bullet_data["size"][1]) // 2
+            self.shot_x += self.rect.width - self.bullet_data["size"][0]
+
+    def update(self):
+        if self.shot_ready:
+            self.shot_ready = False
+            threading.Thread(target=self.shot_timer_reloading).start()
+            self.bullet(self.groups_data, (self.shot_x, self.shot_y), side=self.side)
+
+    # Таймер, по истечению которого произойдёт выстрел
+    def shot_timer_reloading(self):
+        time.sleep(self.shot_cool_down)
+        self.shot_ready = True
+
+
+# Текст
+class Text(pygame.sprite.Sprite):
+    def __init__(self, group, coord, text, **kwargs):
+        super(Text, self).__init__(group)
+        self.image = pygame.font.Font(None, 24).render(
+            f"{text}", False, kwargs.get("color", (27, 29, 31)))
+        self.rect = self.image.get_rect()
+        self.rect.x = coord[0]
+        self.rect.y = coord[1]

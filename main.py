@@ -27,6 +27,8 @@ class Scene:
 
         self.default_font = pygame.font.Font(None, 24)  # Стандартный шрифт
 
+        self.level_path_now = str()
+
     def play(self, m_visible=False):
         pygame.mouse.set_visible(m_visible)
         while self.game_run:
@@ -47,6 +49,8 @@ class Scene:
                     self.draw_grid = not self.draw_grid
                 if event.key == pygame.K_f:
                     self.fps_show = not self.fps_show
+                if event.key == pygame.K_r:
+                    self.load_level_on_scene(self.level_path_now)
         for key in self.groups_data:
             self.groups_data[key].update()
 
@@ -65,11 +69,14 @@ class Scene:
             self.screen.blit(self.default_font.render(f"FPS {str(round(self.clock.get_fps()))}",
                                                       False, (200, 204, 194)), (20, 20))
 
+    # Очистка уровня
     def clear_groups_data(self):
         for key in self.groups_data:
             self.groups_data[key].remove(self.groups_data[key])
 
+    # Загрузка уровня
     def load_level_on_scene(self, path):
+        self.level_path_now = path
         self.clear_groups_data()
         level_updater.load_level(path, self.groups_data)
 
@@ -77,6 +84,9 @@ class Scene:
 if __name__ == '__main__':
     pygame.init()
     scene = Scene()
-    scene.load_level_on_scene("Levels/level_0.json")
+    # scene.load_level_on_scene("Levels/Demo levels/demo_level_1.json")
+    # scene.load_level_on_scene("Levels/Demo levels/demo_level_2.json")
+    # scene.load_level_on_scene("Levels/Demo levels/demo_level_3.json")
+    scene.load_level_on_scene("Levels/Demo levels/demo_level_4.json")
 
     scene.play()

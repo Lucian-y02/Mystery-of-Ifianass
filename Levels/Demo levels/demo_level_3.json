@@ -1,0 +1,266 @@
+{
+  "1 3": [
+    "TopLeftCorner",
+    {}
+  ],
+  "1 4": [
+    "WesternWall",
+    {}
+  ],
+  "1 5": [
+    "WesternWall",
+    {}
+  ],
+  "1 6": [
+    "WesternWall",
+    {}
+  ],
+  "1 7": [
+    "WesternWall",
+    {}
+  ],
+  "1 8": [
+    "DownLeftCorner",
+    {}
+  ],
+  "2 3": [
+    "NorthWall",
+    {}
+  ],
+  "3 3": [
+    "NorthWall",
+    {}
+  ],
+  "4 3": [
+    "NorthWall",
+    {}
+  ],
+  "6 3": [
+    "NorthWall",
+    {}
+  ],
+  "7 3": [
+    "NorthWall",
+    {}
+  ],
+  "8 3": [
+    "NorthWall",
+    {}
+  ],
+  "10 3": [
+    "NorthWall",
+    {}
+  ],
+  "11 3": [
+    "NorthWall",
+    {}
+  ],
+  "12 3": [
+    "NorthWall",
+    {}
+  ],
+  "14 3": [
+    "NorthWall",
+    {}
+  ],
+  "16 3": [
+    "NorthWall",
+    {}
+  ],
+  "17 3": [
+    "NorthWall",
+    {}
+  ],
+  "19 3": [
+    "TopRightCorner",
+    {}
+  ],
+  "19 4": [
+    "EastWall",
+    {}
+  ],
+  "19 6": [
+    "EastWall",
+    {}
+  ],
+  "19 7": [
+    "EastWall",
+    {}
+  ],
+  "19 8": [
+    "DownRightCorner",
+    {}
+  ],
+  "2 8": [
+    "SouthWall",
+    {}
+  ],
+  "3 8": [
+    "SouthWall",
+    {}
+  ],
+  "4 8": [
+    "SouthWall",
+    {}
+  ],
+  "6 8": [
+    "SouthWall",
+    {}
+  ],
+  "7 8": [
+    "SouthWall",
+    {}
+  ],
+  "8 8": [
+    "SouthWall",
+    {}
+  ],
+  "10 8": [
+    "SouthWall",
+    {}
+  ],
+  "11 8": [
+    "SouthWall",
+    {}
+  ],
+  "12 8": [
+    "SouthWall",
+    {}
+  ],
+  "14 8": [
+    "SouthWall",
+    {}
+  ],
+  "16 8": [
+    "SouthWall",
+    {}
+  ],
+  "17 8": [
+    "SouthWall",
+    {}
+  ],
+  "18 8": [
+    "SouthWall",
+    {}
+  ],
+  "5 3": [
+    "KillZone",
+    {}
+  ],
+  "5 4": [
+    "KillZone",
+    {}
+  ],
+  "5 5": [
+    "KillZone",
+    {}
+  ],
+  "5 6": [
+    "KillZone",
+    {}
+  ],
+  "5 7": [
+    "KillZone",
+    {}
+  ],
+  "5 8": [
+    "KillZone",
+    {}
+  ],
+  "9 8": [
+    "KillZone",
+    {}
+  ],
+  "9 7": [
+    "KillZone",
+    {}
+  ],
+  "9 6": [
+    "KillZone",
+    {}
+  ],
+  "9 5": [
+    "KillZone",
+    {}
+  ],
+  "9 4": [
+    "KillZone",
+    {}
+  ],
+  "9 3": [
+    "KillZone",
+    {}
+  ],
+  "13 8": [
+    "KillZone",
+    {}
+  ],
+  "13 7": [
+    "KillZone",
+    {}
+  ],
+  "13 6": [
+    "KillZone",
+    {}
+  ],
+  "13 5": [
+    "KillZone",
+    {}
+  ],
+  "13 4": [
+    "KillZone",
+    {}
+  ],
+  "13 3": [
+    "KillZone",
+    {}
+  ],
+  "15 8": [
+    "KillZone",
+    {}
+  ],
+  "15 7": [
+    "KillZone",
+    {}
+  ],
+  "15 6": [
+    "KillZone",
+    {}
+  ],
+  "15 5": [
+    "KillZone",
+    {}
+  ],
+  "15 4": [
+    "KillZone",
+    {}
+  ],
+  "15 3": [
+    "KillZone",
+    {}
+  ],
+  "2 5": [
+    "Player",
+    {}
+  ],
+  "11 4": [
+    "Box",
+    {}
+  ],
+  "11 7": [
+    "Box",
+    {}
+  ],
+  "18 3": [
+    "NorthWall",
+    {}
+  ],
+  "20 5": [
+    "WesternWall",
+    {}
+  ],
+  "19 5": [
+    "BrokenButton",
+    {"side": "RIGHT"}
+  ]
+}

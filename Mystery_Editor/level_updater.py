@@ -41,7 +41,8 @@ available_objects = {
     "SingleKillZoneCorner": [SingleKillZoneCorner, "kill_zones"],
     "HorizontalLockedDoor": [HorizontalLockedDoor, "all_the_groups"],
     "VerticalLockedDoor": [VerticalLockedDoor, "all_the_groups"],
-    "BrokenButton": [BrokenButton, "all_the_groups"]
+    "BrokenButton": [BrokenButton, "all_the_groups"],
+    "Cannon": [Cannon, "all_the_groups"]
 }
 
 

@@ -1,0 +1,394 @@
+{
+  "2 2": [
+    "TopLeftCorner",
+    {}
+  ],
+  "3 2": [
+    "NorthWall",
+    {}
+  ],
+  "4 2": [
+    "NorthWall",
+    {}
+  ],
+  "5 2": [
+    "NorthWall",
+    {}
+  ],
+  "6 2": [
+    "TopRightCorner",
+    {}
+  ],
+  "2 3": [
+    "WesternWall",
+    {}
+  ],
+  "2 4": [
+    "WesternWall",
+    {}
+  ],
+  "6 3": [
+    "EastWall",
+    {}
+  ],
+  "6 4": [
+    "EastWall",
+    {}
+  ],
+  "2 5": [
+    "NorthKillZone",
+    {}
+  ],
+  "3 5": [
+    "NorthKillZone",
+    {}
+  ],
+  "4 5": [
+    "NorthKillZone",
+    {}
+  ],
+  "5 5": [
+    "NorthKillZone",
+    {}
+  ],
+  "6 5": [
+    "NorthKillZone",
+    {}
+  ],
+  "2 6": [
+    "SouthKillZone",
+    {}
+  ],
+  "3 6": [
+    "SouthKillZone",
+    {}
+  ],
+  "4 6": [
+    "SouthKillZone",
+    {}
+  ],
+  "5 6": [
+    "SouthKillZone",
+    {}
+  ],
+  "6 6": [
+    "SouthKillZone",
+    {}
+  ],
+  "2 7": [
+    "WesternWall",
+    {}
+  ],
+  "2 8": [
+    "WesternWall",
+    {}
+  ],
+  "2 9": [
+    "WesternWall",
+    {}
+  ],
+  "2 10": [
+    "DownLeftCorner",
+    {}
+  ],
+  "3 10": [
+    "SouthWall",
+    {}
+  ],
+  "4 10": [
+    "SouthWall",
+    {}
+  ],
+  "5 10": [
+    "SouthWall",
+    {}
+  ],
+  "6 10": [
+    "SouthWall",
+    {}
+  ],
+  "7 10": [
+    "SouthWall",
+    {}
+  ],
+  "8 10": [
+    "SouthWall",
+    {}
+  ],
+  "9 10": [
+    "SouthWall",
+    {}
+  ],
+  "10 10": [
+    "KillZone",
+    {}
+  ],
+  "11 10": [
+    "SouthWall",
+    {}
+  ],
+  "12 10": [
+    "SouthWall",
+    {}
+  ],
+  "13 10": [
+    "SouthWall",
+    {}
+  ],
+  "14 10": [
+    "SouthWall",
+    {}
+  ],
+  "15 10": [
+    "SouthWall",
+    {}
+  ],
+  "16 10": [
+    "SouthWall",
+    {}
+  ],
+  "17 10": [
+    "SouthWall",
+    {}
+  ],
+  "18 10": [
+    "DownRightCorner",
+    {}
+  ],
+  "18 9": [
+    "EastWall",
+    {}
+  ],
+  "18 8": [
+    "EastWall",
+    {}
+  ],
+  "18 7": [
+    "EastWall",
+    {}
+  ],
+  "18 6": [
+    "SouthKillZone",
+    {}
+  ],
+  "18 5": [
+    "NorthKillZone",
+    {}
+  ],
+  "18 4": [
+    "EastWall",
+    {}
+  ],
+  "18 3": [
+    "EastWall",
+    {}
+  ],
+  "18 1": [
+    "TopRightCorner",
+    {}
+  ],
+  "17 1": [
+    "NorthWall",
+    {}
+  ],
+  "15 1": [
+    "NorthWall",
+    {}
+  ],
+  "14 1": [
+    "TopLeftCorner",
+    {}
+  ],
+  "14 3": [
+    "WesternWall",
+    {}
+  ],
+  "14 4": [
+    "WesternWall",
+    {}
+  ],
+  "14 5": [
+    "NorthKillZone",
+    {}
+  ],
+  "15 5": [
+    "NorthKillZone",
+    {}
+  ],
+  "16 5": [
+    "NorthKillZone",
+    {}
+  ],
+  "17 5": [
+    "NorthKillZone",
+    {}
+  ],
+  "14 6": [
+    "SouthKillZone",
+    {}
+  ],
+  "15 6": [
+    "SouthKillZone",
+    {}
+  ],
+  "16 6": [
+    "SouthKillZone",
+    {}
+  ],
+  "17 6": [
+    "SouthKillZone",
+    {}
+  ],
+  "10 9": [
+    "KillZone",
+    {}
+  ],
+  "10 8": [
+    "KillZone",
+    {}
+  ],
+  "10 7": [
+    "KillZone",
+    {}
+  ],
+  "10 6": [
+    "KillZone",
+    {}
+  ],
+  "7 6": [
+    "SouthKillZone",
+    {}
+  ],
+  "8 6": [
+    "SouthKillZone",
+    {}
+  ],
+  "9 6": [
+    "SouthKillZone",
+    {}
+  ],
+  "11 6": [
+    "SouthKillZone",
+    {}
+  ],
+  "12 6": [
+    "SouthKillZone",
+    {}
+  ],
+  "13 6": [
+    "SouthKillZone",
+    {}
+  ],
+  "4 3": [
+    "Player",
+    {}
+  ],
+  "13 8": [
+    "NorthVerticalPlatform",
+    {}
+  ],
+  "7 8": [
+    "NorthVerticalPlatform",
+    {}
+  ],
+  "7 9": [
+    "SouthVerticalPlatform",
+    {}
+  ],
+  "13 9": [
+    "SouthVerticalPlatform",
+    {}
+  ],
+  "14 2": [
+    "WesternWall",
+    {}
+  ],
+  "18 2": [
+    "EastWall",
+    {}
+  ],
+  "16 0": [
+    "SouthWall",
+    {}
+  ],
+  "16 1": [
+    "BrokenButton",
+    {}
+  ],
+  "7 4": [
+    "SouthWall",
+    {}
+  ],
+  "8 4": [
+    "SouthWall",
+    {}
+  ],
+  "9 4": [
+    "SouthWall",
+    {}
+  ],
+  "10 4": [
+    "SouthWall",
+    {}
+  ],
+  "11 4": [
+    "SouthWall",
+    {}
+  ],
+  "12 4": [
+    "SouthWall",
+    {}
+  ],
+  "13 4": [
+    "SouthWall",
+    {}
+  ],
+  "7 5": [
+    "NorthKillZone",
+    {}
+  ],
+  "8 5": [
+    "NorthKillZone",
+    {}
+  ],
+  "9 5": [
+    "NorthKillZone",
+    {}
+  ],
+  "10 5": [
+    "NorthKillZone",
+    {}
+  ],
+  "11 5": [
+    "NorthKillZone",
+    {}
+  ],
+  "12 5": [
+    "NorthKillZone",
+    {}
+  ],
+  "13 5": [
+    "NorthKillZone",
+    {}
+  ],
+  "1 5": [
+    "NorthVerticalPlatform",
+    {}
+  ],
+  "19 5": [
+    "NorthVerticalPlatform",
+    {}
+  ],
+  "1 6": [
+    "SouthVerticalPlatform",
+    {}
+  ],
+  "19 6": [
+    "SouthVerticalPlatform",
+    {}
+  ],
+  "10 11": [
+    "Box",
+    {}
+  ]
+}

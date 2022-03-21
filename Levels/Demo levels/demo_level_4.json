@@ -1,0 +1,26 @@
+{
+  "11 4": [
+    "TopLeftCorner",
+    {}
+  ],
+  "13 4": [
+    "TopRightCorner",
+    {}
+  ],
+  "13 6": [
+    "DownRightCorner",
+    {}
+  ],
+  "11 6": [
+    "DownLeftCorner",
+    {}
+  ],
+  "6 8": [
+    "Player",
+    {}
+  ],
+  "12 5": [
+    "Cannon",
+    {"side": "LEFT"}
+  ]
+}

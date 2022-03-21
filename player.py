@@ -23,8 +23,8 @@ class Player(pygame.sprite.Sprite):
         self.rect.y = coord[1]
         # Rectangle для считывания столкновений со стенами
         self.collision_rect = pygame.rect.Rect(
-            (self.rect.x, self.rect.y + self.rect.height // 2,
-             self.rect.width, self.rect.height // 2))
+            (self.rect.x, self.rect.y + self.rect.height - self.rect.width,
+             self.rect.width, self.rect.width))  # 44 x 44
 
         # Геймпад
         self.game_pad = None
@@ -73,6 +73,7 @@ class Player(pygame.sprite.Sprite):
         # Рывок
         if self.do_dash:
             self.pointer.side_update(self.pointer.side)
+            self.chop_ready = False
             if self.pointer.side == "UP":
                 self.move_y -= self.default_speed * 2
             elif self.pointer.side == "DOWN":
@@ -85,7 +86,7 @@ class Player(pygame.sprite.Sprite):
         # Смещение игрока
         self.rect.move_ip(self.move_x, self.move_y)
         self.collision_rect.x = self.rect.x
-        self.collision_rect.y = self.rect.y + self.rect.height // 2
+        self.collision_rect.y = self.rect.y + self.rect.height - self.rect.width
 
         # Отслеживание столкновений
         self.check_collision()
@@ -111,7 +112,7 @@ class Player(pygame.sprite.Sprite):
             self.move_x -= self.speed
             self.pointer.side_update("LEFT")
         # Удар
-        if key[pygame.K_j] and self.chop_ready:
+        if key[pygame.K_j] and self.chop_ready and not self.do_dash:
             Chop(self.groups_data["player_chops"], self, damage=60)
             self.speed = 0
             self.chop_ready = False
@@ -143,7 +144,7 @@ class Player(pygame.sprite.Sprite):
                             max(increase_y, self.speed))
             self.pointer.side_update("DOWN" if increase_y > 0 else "UP")
         # Удар
-        if self.game_pad.get_button(2) and self.chop_ready and self.do_chop:
+        if self.game_pad.get_button(2) and self.chop_ready and not self.do_dash:
             Chop(self.groups_data["player_chops"], self, damage=60)
             self.speed = 0
             self.chop_ready = False
@@ -174,18 +175,19 @@ class Player(pygame.sprite.Sprite):
                 obj_y = obj.rect.y
 
         # Столкновение с зонами поражения
-        for kill_zone in self.groups_data["kill_zones"]:
-            if self.collision_rect.colliderect(kill_zone.rect) and not self.do_dash:
-                self.rect.x = self.respawn_coord[0]
-                self.rect.y = self.respawn_coord[1]
-                self.pointer.side_update(self.pointer.side)
-                self.groups_data["player_chops"].remove(self.groups_data["player_chops"])
+        if (pygame.sprite.spritecollideany(self, self.groups_data["kill_zones"]) and
+                not self.do_dash):
+            self.revival()
 
         # Столкновение с другими игровыми объектами
         for obj in self.groups_data["game_stuff"]:
             if (self.collision_rect.colliderect(obj.rect) and
                     obj.__class__.__name__ == "MobileObject"):
                 obj.rect.move_ip(self.move_x, self.move_y)
+            if (self.collision_rect.colliderect(obj.rect) and
+                    obj.__class__.__name__ == "Bullet"):
+                obj.kill()
+                self.revival()
 
         # Столкновение со стенами
         if collision_vertical_wall:
@@ -217,9 +219,19 @@ class Player(pygame.sprite.Sprite):
 
     # Таймер, по истечению которого рывок заканчивается
     def dash_timer(self):
+        self.chop_ready = False
         time.sleep(self.dash_duration)
         self.do_dash = False
         self.speed = self.default_speed
-        self.do_chop = True
         self.pointer.side_update(self.pointer.side)
         threading.Thread(target=self.dash_timer_reloading).start()
+        time.sleep(0.25)
+        self.pointer.side_update(self.pointer.side)
+        self.chop_ready = True
+
+    # Возрождение
+    def revival(self):
+        self.rect.x = self.respawn_coord[0]
+        self.rect.y = self.respawn_coord[1]
+        self.pointer.side_update(self.pointer.side)
+        self.groups_data["player_chops"].remove(self.groups_data["player_chops"])
