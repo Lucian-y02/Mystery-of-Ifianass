@@ -348,6 +348,9 @@ class MobileObject(pygame.sprite.Sprite):
 
         self.groups_data = groups
 
+        # Характеристики
+        self.weight = int(kwargs.get("weight", "1"))
+
     def update(self):
         self.check_collision()
 
@@ -509,8 +512,8 @@ class Cannon(pygame.sprite.Sprite):
         # Характеристики
         self.side = kwargs.get("side", "UP")  # Сторона, с которой будет производится выстрел
         self.bullet_data = self.bullet_types[kwargs.get("bullet", "bullet")]  # Информация о пуле
-        self.bullet = self.bullet_data["class"] # Пуля
-        self.shot_cool_down = int(kwargs.get("shot_cool_down", "3"))  # Пауза между выстрелами
+        self.bullet = self.bullet_data["class"]  # Пуля
+        self.shot_cool_down = float(kwargs.get("shot_cool_down", "3"))  # Пауза между выстрелами
         self.shot_ready = True  # Возможность сделать выстрел
         # Координаты места выстрела
         self.shot_x = self.rect.x
@@ -531,8 +534,8 @@ class Cannon(pygame.sprite.Sprite):
     def update(self):
         if self.shot_ready:
             self.shot_ready = False
-            threading.Thread(target=self.shot_timer_reloading).start()
             self.bullet(self.groups_data, (self.shot_x, self.shot_y), side=self.side)
+            threading.Thread(target=self.shot_timer_reloading).start()
 
     # Таймер, по истечению которого произойдёт выстрел
     def shot_timer_reloading(self):
