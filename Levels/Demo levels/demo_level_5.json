@@ -1,0 +1,176 @@
+{
+  "3 7": [
+    "KillZone",
+    {}
+  ],
+  "7 2": [
+    "MiddleHorizontalPlatform",
+    {}
+  ],
+  "8 2": [
+    "MiddleHorizontalPlatform",
+    {}
+  ],
+  "9 2": [
+    "MiddleHorizontalPlatform",
+    {}
+  ],
+  "10 2": [
+    "MiddleHorizontalPlatform",
+    {}
+  ],
+  "11 2": [
+    "MiddleHorizontalPlatform",
+    {}
+  ],
+  "12 2": [
+    "MiddleHorizontalPlatform",
+    {}
+  ],
+  "13 2": [
+    "MiddleHorizontalPlatform",
+    {}
+  ],
+  "14 2": [
+    "MiddleHorizontalPlatform",
+    {}
+  ],
+  "3 2": [
+    "Box",
+    {}
+  ],
+  "15 8": [
+    "SouthVerticalPlatform",
+    {}
+  ],
+  "15 10": [
+    "Box",
+    {}
+  ],
+  "3 6": [
+    "NorthKillZone",
+    {}
+  ],
+  "3 8": [
+    "SouthKillZone",
+    {}
+  ],
+  "4 7": [
+    "EastKillZone",
+    {}
+  ],
+  "2 7": [
+    "WesternKillZone",
+    {}
+  ],
+  "2 6": [
+    "TopLeftKillZoneCorner",
+    {}
+  ],
+  "4 6": [
+    "TopRightKillZoneCorner",
+    {}
+  ],
+  "4 8": [
+    "DownRightKillZoneCorner",
+    {}
+  ],
+  "2 8": [
+    "DownLeftKillZoneCorner",
+    {}
+  ],
+  "6 2": [
+    "MiddleHorizontalPlatform",
+    {}
+  ],
+  "5 2": [
+    "WesternHorizontalPlatform",
+    {}
+  ],
+  "10 6": [
+    "MobileObject",
+    {}
+  ],
+  "15 3": [
+    "DownLeftCorner",
+    {}
+  ],
+  "15 7": [
+    "TopLeftCorner",
+    {}
+  ],
+  "19 4": [
+    "MiddleVerticalPlatform",
+    {}
+  ],
+  "19 5": [
+    "MiddleVerticalPlatform",
+    {}
+  ],
+  "19 6": [
+    "MiddleVerticalPlatform",
+    {}
+  ],
+  "19 7": [
+    "DownRightCorner",
+    {}
+  ],
+  "18 7": [
+    "MiddleHorizontalPlatform",
+    {}
+  ],
+  "17 7": [
+    "MiddleHorizontalPlatform",
+    {}
+  ],
+  "16 7": [
+    "MiddleHorizontalPlatform",
+    {}
+  ],
+  "18 3": [
+    "SouthWall",
+    {}
+  ],
+  "16 3": [
+    "SouthWall",
+    {}
+  ],
+  "19 3": [
+    "EastWall",
+    {}
+  ],
+  "15 2": [
+    "NorthWall",
+    {}
+  ],
+  "16 2": [
+    "NorthWall",
+    {}
+  ],
+  "17 2": [
+    "NorthWall",
+    {}
+  ],
+  "18 2": [
+    "NorthWall",
+    {}
+  ],
+  "19 2": [
+    "TopRightCorner",
+    {}
+  ],
+  "6 4": [
+    "MobileObject",
+    {}
+  ],
+  "17 3": [
+    "Cannon",
+    {
+      "side": "DOWN"
+    }
+  ],
+  "7 7": [
+    "Player",
+    {}
+  ]
+}

@@ -15,8 +15,8 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, groups: dict, coord, **kwargs):
         super(Player, self).__init__(groups["player"])
         self.groups_data = groups
-        self.image = pygame.Surface((kwargs.get("size", (44, 64))))
-        self.image.fill(kwargs.get("color", (200, 204, 194)))
+        self.image = pygame.Surface((44, 64))
+        self.image.fill((200, 204, 194))
         # Основной Rectangle
         self.rect = self.image.get_rect()
         self.rect.x = coord[0] + 12
@@ -55,7 +55,7 @@ class Player(pygame.sprite.Sprite):
         # Атака
         self.chop_cool_down = kwargs.get("shop_cool_down", 1)
         self.chop_ready = True  # Возможность провести атаку
-        self.do_chop = True  # Атака
+        self.do_chop = False  # Атака
 
         # Рывок
         self.dash_cool_down = kwargs.get("dash_cool_down", 0.5)
@@ -96,33 +96,30 @@ class Player(pygame.sprite.Sprite):
         key = pygame.key.get_pressed()
 
         # Вверх
-        if key[pygame.K_w] or key[pygame.K_UP]:
+        if (key[pygame.K_w] or key[pygame.K_UP]) and self.speed:
             self.move_y -= self.speed
             self.pointer.side_update("UP")
         # Вниз
-        if key[pygame.K_s] or key[pygame.K_DOWN]:
+        if (key[pygame.K_s] or key[pygame.K_DOWN]) and self.speed:
             self.move_y += self.speed
             self.pointer.side_update("DOWN")
         # Вправо
-        if key[pygame.K_d] or key[pygame.K_RIGHT]:
+        if (key[pygame.K_d] or key[pygame.K_RIGHT]) and self.speed:
             self.move_x += self.speed
             self.pointer.side_update("RIGHT")
         # Влево
-        if key[pygame.K_a] or key[pygame.K_LEFT]:
+        if (key[pygame.K_a] or key[pygame.K_LEFT]) and self.speed:
             self.move_x -= self.speed
             self.pointer.side_update("LEFT")
         # Удар
-        if key[pygame.K_j] and self.chop_ready and not self.do_dash:
+        if key[pygame.K_j] and self.chop_ready and not self.do_dash and not self.do_chop:
             Chop(self.groups_data["player_chops"], self, damage=60)
             self.speed = 0
             self.chop_ready = False
+            self.do_chop = True
             threading.Thread(target=self.chop_timer_reloading).start()
         # Рывок
         if key[pygame.K_k] and self.dash_ready and not self.do_dash:
-            self.dash_ready = False
-            self.do_dash = True
-            self.speed = 0
-            self.do_chop = False
             threading.Thread(target=self.dash_timer).start()
 
     # Управление геймпадом
@@ -144,17 +141,15 @@ class Player(pygame.sprite.Sprite):
                             max(increase_y, self.speed))
             self.pointer.side_update("DOWN" if increase_y > 0 else "UP")
         # Удар
-        if self.game_pad.get_button(2) and self.chop_ready and not self.do_dash:
+        if (self.game_pad.get_button(2) and self.chop_ready
+                and not self.do_dash and not self.do_chop):
             Chop(self.groups_data["player_chops"], self, damage=60)
             self.speed = 0
             self.chop_ready = False
+            self.do_chop = True
             threading.Thread(target=self.chop_timer_reloading).start()
         # Рывок
         if self.game_pad.get_button(0) and self.dash_ready and not self.do_dash:
-            self.dash_ready = False
-            self.do_dash = True
-            self.speed = 0
-            self.do_chop = False
             threading.Thread(target=self.dash_timer).start()
 
     # Столкновения
@@ -182,9 +177,6 @@ class Player(pygame.sprite.Sprite):
         # Столкновение с другими игровыми объектами
         for obj in self.groups_data["game_stuff"]:
             if (self.collision_rect.colliderect(obj.rect) and
-                    obj.__class__.__name__ == "MobileObject"):
-                obj.rect.move_ip(self.move_x, self.move_y)
-            if (self.collision_rect.colliderect(obj.rect) and
                     obj.__class__.__name__ == "Bullet"):
                 obj.kill()
                 self.revival()
@@ -211,6 +203,7 @@ class Player(pygame.sprite.Sprite):
     def chop_timer_reloading(self):
         time.sleep(self.chop_cool_down)
         self.chop_ready = True
+        self.do_chop = False
 
     # Таймер, по истечению которого можно использовать рываок
     def dash_timer_reloading(self):
@@ -219,14 +212,19 @@ class Player(pygame.sprite.Sprite):
 
     # Таймер, по истечению которого рывок заканчивается
     def dash_timer(self):
+        self.groups_data["player_chops"].remove(self.groups_data["player_chops"])
+        self.dash_ready = False
+        self.do_dash = True
+        self.speed = 0
+        self.do_chop = False
         self.chop_ready = False
         time.sleep(self.dash_duration)
         self.do_dash = False
         self.speed = self.default_speed
-        self.pointer.side_update(self.pointer.side)
         threading.Thread(target=self.dash_timer_reloading).start()
-        time.sleep(0.25)
+        time.sleep(0.5)
         self.pointer.side_update(self.pointer.side)
+        self.groups_data["player_chops"].remove(self.groups_data["player_chops"])
         self.chop_ready = True
 
     # Возрождение

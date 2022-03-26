@@ -340,8 +340,9 @@ class MobileObject(pygame.sprite.Sprite):
     def __init__(self, groups: dict, coord, **kwargs):
         super(MobileObject, self).__init__(groups["game_stuff"])
         self.shift = kwargs.get("shift", constants.WALL_SHIFT)
-        self.image = pygame.Surface(kwargs.get("size", (32, 32)))
-        self.image.fill((27, 29, 100))
+        self.image = pygame.Surface(kwargs.get("size", (42, 42)))
+        self.image.fill((27, 29, 50))
+        self.image.set_alpha(100)
         self.rect = self.image.get_rect()
         self.rect.x = coord[0] + (64 - self.rect.width) // 2
         self.rect.y = coord[1] + (64 - self.rect.height) // 2
@@ -350,11 +351,42 @@ class MobileObject(pygame.sprite.Sprite):
 
         # Характеристики
         self.weight = int(kwargs.get("weight", "1"))
+        self.move_x = 0
+        self.move_y = 0
+
+        # Стены
+        self.left_wall = VerticalWall(self.groups_data["walls"],
+                                      (self.rect.x, self.rect.y), size=(1, 38))
+        self.right_wall = VerticalWall(self.groups_data["walls"],
+                                       (self.rect.x + self.rect.width + 1, self.rect.y),
+                                       size=(1, 38))
+        self.up_wall = HorizontalWall(self.groups_data["walls"],
+                                      (self.rect.x, self.rect.y), size=(38, 1))
+        self.down_wall = HorizontalWall(self.groups_data["walls"],
+                                        (self.rect.x, self.rect.y + self.rect.height),
+                                        size=(38, 1))
 
     def update(self):
+        self.move_x = self.move_y = 0
         self.check_collision()
 
+        self.rect.move_ip(self.move_x, self.move_y)
+        self.left_wall.rect.move_ip(self.move_x, self.move_y)
+        self.right_wall.rect.move_ip(self.move_x, self.move_y)
+        self.up_wall.rect.move_ip(self.move_x, self.move_y)
+        self.down_wall.rect.move_ip(self.move_x, self.move_y)
+
     def check_collision(self):
+        # Столкновение с игроком
+        for player in self.groups_data["player"]:
+            if self.left_wall.rect.colliderect(player.collision_rect):
+                self.move_x = player.speed
+            elif self.right_wall.rect.colliderect(player.collision_rect):
+                self.move_x = -player.speed
+            elif self.down_wall.rect.colliderect(player.collision_rect):
+                self.move_y = -player.speed
+            elif self.up_wall.rect.colliderect(player.collision_rect):
+                self.move_y = player.speed
         # Столкновение со стенами
         for wall in self.groups_data["walls"]:
             if (self.rect.colliderect(wall.rect) and
@@ -364,11 +396,13 @@ class MobileObject(pygame.sprite.Sprite):
                     wall.__class__.__name__ == "VerticalWall"):
                 pass
 
-        # Столкновение с другими игровыми объектами
-        for obj in self.groups_data["game_stuff"]:
-            if (self.rect.colliderect(obj.rect) and
-                    obj.__class__.__name__ == "KillZone"):
-                self.kill()
+        # Столкновение с зонами поражения
+        if pygame.sprite.spritecollideany(self, self.groups_data["kill_zones"]):
+            self.kill()
+            self.left_wall.kill()
+            self.right_wall.kill()
+            self.up_wall.kill()
+            self.down_wall.kill()
 
 
 # Разбиваемая кнопка
@@ -416,6 +450,10 @@ class HorizontalLockedDoor(pygame.sprite.Sprite):
         self.rect.x = coord[0]
         self.rect.y = coord[1] + (64 - self.rect.height) // 2
 
+        Text(groups["text"], (self.rect.x + self.rect.width // 2 - 14,
+                              self.rect.y + self.rect.height // 2 - 5),
+             "door", size=20)
+
         self.walls_list = [
             HorizontalWall(groups["walls"], (self.rect.x, self.rect.y + self.rect.height - 1)),
             HorizontalWall(groups["walls"], (self.rect.x, self.rect.y))
@@ -438,6 +476,9 @@ class VerticalLockedDoor(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = coord[0] + (64 - self.rect.width) // 2
         self.rect.y = coord[1]
+
+        Text(groups["text"], (self.rect.x + 2, self.rect.y + self.rect.height // 2 - 6),
+             "door", size=20)
 
         self.walls_list = [
             VerticalWall(groups["walls"], (self.rect.x, self.rect.y)),
@@ -507,7 +548,7 @@ class Cannon(pygame.sprite.Sprite):
 
         self.groups_data = groups
 
-        Text(groups["game_stuff"], (self.rect.x + 3, self.rect.y + 24), "cannon")
+        Text(groups["text"], (self.rect.x + 3, self.rect.y + 24), "cannon")
 
         # Характеристики
         self.side = kwargs.get("side", "UP")  # Сторона, с которой будет производится выстрел
@@ -519,17 +560,23 @@ class Cannon(pygame.sprite.Sprite):
         self.shot_x = self.rect.x
         self.shot_y = self.rect.y
 
-        # Координаты выстрела === Доделать ===
+        self.box = Box(groups["walls"], (self.rect.x, self.rect.y))
+
+        # Координаты выстрела
         if self.side == "UP":
             self.shot_x += (self.rect.width - self.bullet_data["size"][1]) // 2
+            self.shot_y -= self.bullet_data["size"][0] + 1
         elif self.side == "DOWN":
             self.shot_x += (self.rect.width - self.bullet_data["size"][1]) // 2
-            self.shot_y += self.rect.height - self.bullet_data["size"][0]
+            self.shot_y += (self.rect.height - self.bullet_data["size"][0] +
+                            self.bullet_data["size"][0] + 1)
         elif self.side == "LEFT":
+            self.shot_x -= self.bullet_data["size"][0] + 1
             self.shot_y += (self.rect.height - self.bullet_data["size"][1]) // 2
         elif self.side == "RIGHT":
             self.shot_y += (self.rect.height - self.bullet_data["size"][1]) // 2
-            self.shot_x += self.rect.width - self.bullet_data["size"][0]
+            self.shot_x += (self.rect.width - self.bullet_data["size"][0] +
+                            self.bullet_data["size"][0] + 1)
 
     def update(self):
         if self.shot_ready:
@@ -547,8 +594,13 @@ class Cannon(pygame.sprite.Sprite):
 class Text(pygame.sprite.Sprite):
     def __init__(self, group, coord, text, **kwargs):
         super(Text, self).__init__(group)
-        self.image = pygame.font.Font(None, 24).render(
+        self.image = pygame.font.Font(None, kwargs.get("size", 24)).render(
             f"{text}", False, kwargs.get("color", (27, 29, 31)))
         self.rect = self.image.get_rect()
         self.rect.x = coord[0]
         self.rect.y = coord[1]
+        self.user = kwargs.get("user", None)
+
+    def update(self):
+        if self.user:
+            self.rect.move_ip(self.user.move_x, self.user.move_y)

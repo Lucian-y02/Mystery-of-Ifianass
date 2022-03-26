@@ -16,7 +16,8 @@ class Scene:
             "game_stuff": pygame.sprite.Group(),  # Различные игровые объекты
             "player": pygame.sprite.Group(),  # Игрок
             "player_chops": pygame.sprite.Group(),  # Удары игрока
-            "doors": pygame.sprite.Group()  # Двери
+            "doors": pygame.sprite.Group(),  # Двери
+            "text": pygame.sprite.Group()  # Текст
         }
         self.clock = pygame.time.Clock()
         self.FPS = kwargs.get("FPS", 60)
@@ -87,6 +88,7 @@ if __name__ == '__main__':
     # scene.load_level_on_scene("Levels/Demo levels/demo_level_1.json")
     # scene.load_level_on_scene("Levels/Demo levels/demo_level_2.json")
     # scene.load_level_on_scene("Levels/Demo levels/demo_level_3.json")
-    scene.load_level_on_scene("Levels/Demo levels/demo_level_4.json")
+    # scene.load_level_on_scene("Levels/Demo levels/demo_level_5.json")
+    scene.load_level_on_scene("Levels/level_0.json")
 
     scene.play()
