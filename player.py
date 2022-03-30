@@ -34,7 +34,7 @@ class Player(pygame.sprite.Sprite):
             pass
 
         # Характеристики
-        self.default_speed = constants.player_speed
+        self.default_speed = constants.PLAYER_SPEED
         self.speed = self.default_speed
         self.respawn_coord = coord
 

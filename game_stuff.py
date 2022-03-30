@@ -340,7 +340,7 @@ class MobileObject(pygame.sprite.Sprite):
     def __init__(self, groups: dict, coord, **kwargs):
         super(MobileObject, self).__init__(groups["game_stuff"])
         self.shift = kwargs.get("shift", constants.WALL_SHIFT)
-        self.image = pygame.Surface(kwargs.get("size", (42, 42)))
+        self.image = pygame.Surface(kwargs.get("size", (64, 64)))
         self.image.fill((27, 29, 50))
         self.image.set_alpha(100)
         self.rect = self.image.get_rect()
@@ -353,22 +353,31 @@ class MobileObject(pygame.sprite.Sprite):
         self.weight = int(kwargs.get("weight", "1"))
         self.move_x = 0
         self.move_y = 0
+        self.can_move_x = False
+        self.can_move_y = False
+        self.speed = constants.BOX_MOVE_SPEED
+        self.distance = 0  # Расстояние, которое Box должен переместиться
+
+        # Text(self.groups_data["text"], (self.rect.x + 18, self.rect.y + 26),
+        #      "Box", color=(200, 204, 194), user=self)
 
         # Стены
         self.left_wall = VerticalWall(self.groups_data["walls"],
-                                      (self.rect.x, self.rect.y), size=(1, 38))
+                                      (self.rect.x, self.rect.y), size=(1, 60))
         self.right_wall = VerticalWall(self.groups_data["walls"],
                                        (self.rect.x + self.rect.width + 1, self.rect.y),
-                                       size=(1, 38))
+                                       size=(1, 60))
         self.up_wall = HorizontalWall(self.groups_data["walls"],
-                                      (self.rect.x, self.rect.y), size=(38, 1))
+                                      (self.rect.x, self.rect.y), size=(60, 1))
         self.down_wall = HorizontalWall(self.groups_data["walls"],
                                         (self.rect.x, self.rect.y + self.rect.height),
-                                        size=(38, 1))
+                                        size=(60, 1))
 
     def update(self):
         self.move_x = self.move_y = 0
         self.check_collision()
+
+        self.box_move()
 
         self.rect.move_ip(self.move_x, self.move_y)
         self.left_wall.rect.move_ip(self.move_x, self.move_y)
@@ -379,14 +388,18 @@ class MobileObject(pygame.sprite.Sprite):
     def check_collision(self):
         # Столкновение с игроком
         for player in self.groups_data["player"]:
-            if self.left_wall.rect.colliderect(player.collision_rect):
-                self.move_x = player.speed
-            elif self.right_wall.rect.colliderect(player.collision_rect):
-                self.move_x = -player.speed
-            elif self.down_wall.rect.colliderect(player.collision_rect):
-                self.move_y = -player.speed
-            elif self.up_wall.rect.colliderect(player.collision_rect):
-                self.move_y = player.speed
+            if self.left_wall.rect.colliderect(player.collision_rect) and not self.can_move_x:
+                self.can_move_x = True
+                self.distance = 64
+            elif self.right_wall.rect.colliderect(player.collision_rect) and not self.can_move_x:
+                self.can_move_x = True
+                self.distance = -64
+            elif self.down_wall.rect.colliderect(player.collision_rect) and not self.can_move_y:
+                self.can_move_y = True
+                self.distance = -64
+            elif self.up_wall.rect.colliderect(player.collision_rect) and not self.can_move_y:
+                self.can_move_y = True
+                self.distance = 64
         # Столкновение со стенами
         for wall in self.groups_data["walls"]:
             if (self.rect.colliderect(wall.rect) and
@@ -398,11 +411,23 @@ class MobileObject(pygame.sprite.Sprite):
 
         # Столкновение с зонами поражения
         if pygame.sprite.spritecollideany(self, self.groups_data["kill_zones"]):
-            self.kill()
             self.left_wall.kill()
             self.right_wall.kill()
             self.up_wall.kill()
             self.down_wall.kill()
+            self.kill()
+
+    # Перемещение
+    def box_move(self):
+        if self.distance == 0:
+            self.can_move_x = self.can_move_y = False
+
+        if self.can_move_x:
+            self.move_x = self.speed if self.distance > 0 else -self.speed
+            self.distance -= self.move_x
+        elif self.can_move_y:
+            self.move_y = self.speed if self.distance > 0 else -self.speed
+            self.distance -= self.move_y
 
 
 # Разбиваемая кнопка
@@ -450,9 +475,9 @@ class HorizontalLockedDoor(pygame.sprite.Sprite):
         self.rect.x = coord[0]
         self.rect.y = coord[1] + (64 - self.rect.height) // 2
 
-        Text(groups["text"], (self.rect.x + self.rect.width // 2 - 14,
-                              self.rect.y + self.rect.height // 2 - 5),
-             "door", size=20)
+        self.text = Text(groups["text"], (self.rect.x + self.rect.width // 2 - 14,
+                         self.rect.y + self.rect.height // 2 - 5),
+                         "door", size=20)
 
         self.walls_list = [
             HorizontalWall(groups["walls"], (self.rect.x, self.rect.y + self.rect.height - 1)),
@@ -464,6 +489,7 @@ class HorizontalLockedDoor(pygame.sprite.Sprite):
     def open_door(self):
         for wall in self.walls_list:
             wall.kill()
+
         self.kill()
 
 

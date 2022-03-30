@@ -88,7 +88,7 @@ if __name__ == '__main__':
     # scene.load_level_on_scene("Levels/Demo levels/demo_level_1.json")
     # scene.load_level_on_scene("Levels/Demo levels/demo_level_2.json")
     # scene.load_level_on_scene("Levels/Demo levels/demo_level_3.json")
-    # scene.load_level_on_scene("Levels/Demo levels/demo_level_5.json")
-    scene.load_level_on_scene("Levels/level_0.json")
+    scene.load_level_on_scene("Levels/Demo levels/demo_level_5.json")
+    # scene.load_level_on_scene("Levels/level_0.json")
 
     scene.play()
