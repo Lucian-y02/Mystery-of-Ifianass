@@ -222,36 +222,6 @@ class Chop(pygame.sprite.Sprite):
         self.kill()
 
 
-# Индикатор здоровья
-class HealthPointsIndicator(pygame.sprite.Sprite):
-    def __init__(self, group, user, **kwargs):
-        print("ok")
-        super(HealthPointsIndicator, self).__init__(group)
-        self.user = user
-
-        self.shift_horizontal = kwargs.get("shift_horizontal", 0)
-        self.shift_vertical = kwargs.get("shift_vertical", -4)
-
-        self.image = pygame.Surface(kwargs.get("size", (64, 4)))
-        self.image.fill(kwargs.get("color", (200, 204, 194)))
-        self.rect = self.image.get_rect()
-
-        self.rect.x = self.user.rect.x + self.shift_horizontal
-        self.rect.y = self.user.rect.y + self.shift_vertical - self.rect.height
-
-        self.max_health_points = user.max_health_points
-
-    def update(self):
-        if self.user.health_points <= 0:
-            self.kill()
-        self.image = pygame.transform.scale(self.image,
-                                            (max(int(self.rect.width *
-                                                     (self.user.health_points /
-                                                      self.max_health_points)), 0), 3))
-        self.rect.x = self.user.rect.x - self.shift_horizontal
-        self.rect.y = self.user.rect.y - self.shift_vertical
-
-
 # Зона поражения (пропасть, море и т.д.)
 class KillZone(pygame.sprite.Sprite):
     def __init__(self, group, coord, **kwargs):
@@ -338,7 +308,7 @@ class SingleKillZoneCorner(KillZone):
 # Передвижной объект
 class MobileObject(pygame.sprite.Sprite):
     def __init__(self, groups: dict, coord, **kwargs):
-        super(MobileObject, self).__init__(groups["game_stuff"])
+        super(MobileObject, self).__init__(groups["mobile_objects"])
         self.shift = kwargs.get("shift", constants.WALL_SHIFT)
         self.image = pygame.Surface(kwargs.get("size", (64, 64)))
         self.image.fill((27, 29, 50))
@@ -346,6 +316,9 @@ class MobileObject(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = coord[0] + (64 - self.rect.width) // 2
         self.rect.y = coord[1] + (64 - self.rect.height) // 2
+
+        # Дополнительный rectangle для проверки столкновения с другими объектами
+        self.check_rect = pygame.Rect((self.rect.x, self.rect.y, 64, 64))
 
         self.groups_data = groups
 
@@ -363,15 +336,17 @@ class MobileObject(pygame.sprite.Sprite):
 
         # Стены
         self.left_wall = VerticalWall(self.groups_data["walls"],
-                                      (self.rect.x, self.rect.y), size=(1, 60))
+                                      (self.rect.x, self.rect.y), size=(1, 58))
         self.right_wall = VerticalWall(self.groups_data["walls"],
-                                       (self.rect.x + self.rect.width + 1, self.rect.y),
-                                       size=(1, 60))
+                                       (self.rect.x + self.rect.width - 1, self.rect.y),
+                                       size=(1, 58))
         self.up_wall = HorizontalWall(self.groups_data["walls"],
-                                      (self.rect.x, self.rect.y), size=(60, 1))
+                                      (self.rect.x, self.rect.y), size=(58, 1))
         self.down_wall = HorizontalWall(self.groups_data["walls"],
-                                        (self.rect.x, self.rect.y + self.rect.height),
-                                        size=(60, 1))
+                                        (self.rect.x, self.rect.y + self.rect.height - 1),
+                                        size=(58, 1))
+        # Список стена, относыщихся к данному объекту
+        self.walls = [self.left_wall, self.right_wall, self.up_wall, self.down_wall]
 
     def update(self):
         self.move_x = self.move_y = 0
@@ -403,11 +378,13 @@ class MobileObject(pygame.sprite.Sprite):
         # Столкновение со стенами
         for wall in self.groups_data["walls"]:
             if (self.rect.colliderect(wall.rect) and
-                    wall.__class__.__name__ == "HorizontalWall"):
-                pass
+                    wall.__class__.__name__ == "HorizontalWall" and
+                    wall not in self.walls):
+                self.can_move_y = False
             if (self.rect.colliderect(wall.rect) and
-                    wall.__class__.__name__ == "VerticalWall"):
-                pass
+                    wall.__class__.__name__ == "VerticalWall" and
+                    wall not in self.walls):
+                self.can_move_x = False
 
         # Столкновение с зонами поражения
         if pygame.sprite.spritecollideany(self, self.groups_data["kill_zones"]):
@@ -430,10 +407,10 @@ class MobileObject(pygame.sprite.Sprite):
             self.distance -= self.move_y
 
 
-# Разбиваемая кнопка
+# Уничтожаемая кнопка
 class BrokenButton(pygame.sprite.Sprite):
     def __init__(self, groups: dict, coord, **kwargs):
-        super(BrokenButton, self).__init__(groups["game_stuff"])
+        super(BrokenButton, self).__init__(groups["buttons"])
         if kwargs.get("side", "UP") == "UP" or kwargs.get("side", "UP") == "DOWN":
             self.image = pygame.Surface(kwargs.get("size", (32, 16)))
         else:
@@ -450,6 +427,9 @@ class BrokenButton(pygame.sprite.Sprite):
         # Список ударов игрока
         self.chops_list = groups["player_chops"]
 
+        self.player = groups["player"]
+        self.mobile_objects = groups["mobile_objects"]
+
         # Объекты, на которые влияет кнопка
         self.doors_list = groups["doors"]
         self.index = kwargs.get("index", "0")
@@ -458,7 +438,9 @@ class BrokenButton(pygame.sprite.Sprite):
         """
 
     def update(self):
-        if pygame.sprite.spritecollideany(self, self.chops_list):
+        if (pygame.sprite.spritecollideany(self, self.chops_list) or
+                pygame.sprite.spritecollideany(self, self.player) or
+                pygame.sprite.spritecollideany(self, self.mobile_objects)):
             for door in self.doors_list:
                 if door.index == self.index:
                     door.open_door()
@@ -475,6 +457,9 @@ class HorizontalLockedDoor(pygame.sprite.Sprite):
         self.rect.x = coord[0]
         self.rect.y = coord[1] + (64 - self.rect.height) // 2
 
+        self.old_rect_x = self.rect.x
+        self.old_rect_y = self.rect.y
+
         self.text = Text(groups["text"], (self.rect.x + self.rect.width // 2 - 14,
                          self.rect.y + self.rect.height // 2 - 5),
                          "door", size=20)
@@ -486,11 +471,21 @@ class HorizontalLockedDoor(pygame.sprite.Sprite):
 
         self.index = kwargs.get("index", "0")
 
-    def open_door(self):
-        for wall in self.walls_list:
-            wall.kill()
+    def open_door(self, kill_flag=True):
+        if kill_flag:
+            for wall in self.walls_list:
+                wall.kill()
+            self.text.kill()
+            self.kill()
+        else:
+            self.rect.y = -1080
+            for wall in self.walls_list:
+                wall.rect.y = -1080
 
-        self.kill()
+    def close_door(self):
+        self.rect.y = self.old_rect_y
+        for wall in self.walls_list:
+            wall.rect.y = self.old_rect_y
 
 
 # Вертикальная закрытая дверь
@@ -503,8 +498,12 @@ class VerticalLockedDoor(pygame.sprite.Sprite):
         self.rect.x = coord[0] + (64 - self.rect.width) // 2
         self.rect.y = coord[1]
 
-        Text(groups["text"], (self.rect.x + 2, self.rect.y + self.rect.height // 2 - 6),
-             "door", size=20)
+        self.old_rect_x = self.rect.x
+        self.old_rect_y = self.rect.y
+
+        self.text = Text(groups["text"],
+                         (self.rect.x + 2, self.rect.y + self.rect.height // 2 - 6),
+                         "door", size=20)
 
         self.walls_list = [
             VerticalWall(groups["walls"], (self.rect.x, self.rect.y)),
@@ -513,10 +512,21 @@ class VerticalLockedDoor(pygame.sprite.Sprite):
 
         self.index = kwargs.get("index", "0")
 
-    def open_door(self):
+    def open_door(self, kill_flag=True):
+        if kill_flag:
+            for wall in self.walls_list:
+                wall.kill()
+            self.text.kill()
+            self.kill()
+        else:
+            self.rect.y = -1080
+            for wall in self.walls_list:
+                wall.rect.y = -1080
+
+    def close_door(self):
+        self.rect.y = self.old_rect_y
         for wall in self.walls_list:
-            wall.kill()
-        self.kill()
+            wall.rect.y = self.old_rect_y
 
 
 # Пуля
@@ -538,7 +548,7 @@ class Bullet(pygame.sprite.Sprite):
 
         # Характеристики
         self.speed = kwargs.get("speed", 3)  # Скорость
-        self.damage = kwargs.get("damage", 10)  # Урон
+        self.damage = kwargs.get("damage", 1)  # Урон
         self.move_x = 0  # Передвижение по оси OX
         self.move_y = 0  # Передвижение по оси OY
 
@@ -630,3 +640,62 @@ class Text(pygame.sprite.Sprite):
     def update(self):
         if self.user:
             self.rect.move_ip(self.user.move_x, self.user.move_y)
+
+
+# Нажимная плита
+class PressureButton(pygame.sprite.Sprite):
+    def __init__(self, groups: dict, coord, **kwargs):
+        super(PressureButton, self).__init__(groups["buttons"])
+        self.image = pygame.Surface((42, 42))
+        self.image.fill((27, 29, 100))
+        self.rect = self.image.get_rect()
+        self.rect.x = coord[0] + (64 - self.rect.width) // 2
+        self.rect.y = coord[1] + (64 - self.rect.height) // 2
+
+        self.mobile_objects = groups["mobile_objects"]
+        self.player = groups["player"]
+
+        # Объекты, на которые влияет кнопка
+        self.doors_list = groups["doors"]
+        self.index = kwargs.get("index", "0")
+
+        # Характеристики
+        self.pressure = False
+
+    def update(self):
+        self.pressure = False
+        if (pygame.sprite.spritecollideany(self, self.player) or
+                pygame.sprite.spritecollideany(self, self.mobile_objects)):
+            self.pressure = True
+
+        if self.pressure:
+            for door in self.doors_list:
+                if door.index == self.index:
+                    door.open_door(kill_flag=False)
+        else:
+            for door in self.doors_list:
+                if door.index == self.index:
+                    door.close_door()
+
+
+# Показатель здоровья
+class HealthIndicatorUi(pygame.sprite.Sprite):
+    def __init__(self, group, coord, **kwargs):
+        super(HealthIndicatorUi, self).__init__(group)
+        self.image = pygame.Surface((100, 20))
+        self.image.fill((200, 204, 194))
+        self.rect = self.image.get_rect()
+        self.rect.x = coord[0]
+        self.rect.y = coord[1]
+
+        self.user = kwargs.get("user", None)
+        self.max_health_points = self.user.max_health_points
+        self.before_value = self.user.health_points
+        self.width_one = self.rect.width // self.max_health_points
+
+    def update(self):
+        if self.user.health_points != self.before_value:
+            self.before_value = self.user.health_points
+            self.image = pygame.transform.scale(self.image,
+                                                (self.width_one * self.user.health_points,
+                                                 self.rect.height))

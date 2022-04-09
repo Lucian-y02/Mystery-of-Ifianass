@@ -1,0 +1,275 @@
+{
+  "3 2": [
+    "SouthWall",
+    {}
+  ],
+  "4 2": [
+    "SouthWall",
+    {}
+  ],
+  "5 2": [
+    "SouthWall",
+    {}
+  ],
+  "6 2": [
+    "SouthWall",
+    {}
+  ],
+  "2 3": [
+    "EastWall",
+    {}
+  ],
+  "2 4": [
+    "EastWall",
+    {}
+  ],
+  "2 5": [
+    "EastWall",
+    {}
+  ],
+  "2 6": [
+    "EastWall",
+    {}
+  ],
+  "2 7": [
+    "EastWall",
+    {}
+  ],
+  "2 8": [
+    "EastWall",
+    {}
+  ],
+  "3 9": [
+    "NorthWall",
+    {}
+  ],
+  "4 9": [
+    "NorthWall",
+    {}
+  ],
+  "5 9": [
+    "NorthWall",
+    {}
+  ],
+  "6 9": [
+    "NorthWall",
+    {}
+  ],
+  "7 3": [
+    "MiddleVerticalPlatform",
+    {}
+  ],
+  "7 8": [
+    "MiddleVerticalPlatform",
+    {}
+  ],
+  "7 7": [
+    "NorthVerticalPlatform",
+    {}
+  ],
+  "7 4": [
+    "SouthVerticalPlatform",
+    {}
+  ],
+  "8 2": [
+    "SouthWall",
+    {}
+  ],
+  "9 2": [
+    "SouthWall",
+    {}
+  ],
+  "10 2": [
+    "SouthWall",
+    {}
+  ],
+  "11 2": [
+    "SouthWall",
+    {}
+  ],
+  "8 9": [
+    "NorthWall",
+    {}
+  ],
+  "9 9": [
+    "NorthWall",
+    {}
+  ],
+  "10 9": [
+    "NorthWall",
+    {}
+  ],
+  "11 9": [
+    "NorthWall",
+    {}
+  ],
+  "11 4": [
+    "WesternHorizontalPlatform",
+    {}
+  ],
+  "14 2": [
+    "SouthWall",
+    {}
+  ],
+  "15 2": [
+    "SouthWall",
+    {}
+  ],
+  "16 2": [
+    "SouthWall",
+    {}
+  ],
+  "14 9": [
+    "NorthWall",
+    {}
+  ],
+  "15 9": [
+    "NorthWall",
+    {}
+  ],
+  "16 9": [
+    "NorthWall",
+    {}
+  ],
+  "13 3": [
+    "EastWall",
+    {}
+  ],
+  "13 4": [
+    "DownRightCorner",
+    {}
+  ],
+  "12 4": [
+    "SouthWall",
+    {}
+  ],
+  "12 3": [
+    "WesternWall",
+    {}
+  ],
+  "12 8": [
+    "WesternWall",
+    {}
+  ],
+  "12 7": [
+    "TopLeftCorner",
+    {}
+  ],
+  "13 7": [
+    "TopRightCorner",
+    {}
+  ],
+  "13 8": [
+    "EastWall",
+    {}
+  ],
+  "17 2": [
+    "SouthWall",
+    {}
+  ],
+  "17 9": [
+    "NorthWall",
+    {}
+  ],
+  "18 3": [
+    "WesternWall",
+    {}
+  ],
+  "18 4": [
+    "WesternWall",
+    {}
+  ],
+  "18 5": [
+    "WesternWall",
+    {}
+  ],
+  "18 6": [
+    "WesternWall",
+    {}
+  ],
+  "18 7": [
+    "WesternWall",
+    {}
+  ],
+  "18 8": [
+    "WesternWall",
+    {}
+  ],
+  "7 5": [
+    "VerticalLockedDoor",
+    {
+      "index": "1"
+    }
+  ],
+  "7 6": [
+    "VerticalLockedDoor",
+    {
+      "index": "1"
+    }
+  ],
+  "12 6": [
+    "VerticalLockedDoor",
+    {
+      "index": "2"
+    }
+  ],
+  "12 5": [
+    "VerticalLockedDoor",
+    {
+      "index": "2"
+    }
+  ],
+  "11 3": [
+    "BrokenButton",
+    {
+      "index": "2",
+      "side": "RIGHT"
+    }
+  ],
+  "8 4": [
+    "HorizontalLockedDoor",
+    {
+      "index": "3"
+    }
+  ],
+  "9 4": [
+    "HorizontalLockedDoor",
+    {
+      "index": "3"
+    }
+  ],
+  "10 4": [
+    "HorizontalLockedDoor",
+    {
+      "index": "3"
+    }
+  ],
+  "10 8": [
+    "BrokenButton",
+    {
+      "index": "3",
+      "side": "DOWN"
+    }
+  ],
+  "6 7": [
+    "BrokenButton",
+    {
+      "index": "1",
+      "side": "RIGHT"
+    }
+  ],
+  "3 6": [
+    "PressureButton",
+    {
+      "index": "1"
+    }
+  ],
+  "4 4": [
+    "MobileObject",
+    {}
+  ],
+  "5 6": [
+    "Player",
+    {}
+  ]
+}

@@ -37,6 +37,11 @@ class Player(pygame.sprite.Sprite):
         self.default_speed = constants.PLAYER_SPEED
         self.speed = self.default_speed
         self.respawn_coord = coord
+        self.max_health_points = constants.PLAYER_MAX_HEALTH_POINTS
+        self.health_points = kwargs.get("health_points", self.max_health_points)
+
+        self.health_indicator = HealthIndicatorUi(self.groups_data["ui"], (32, 32),
+                                                  user=self)
 
         # Перемещение
         self.move_x = 0
@@ -90,6 +95,9 @@ class Player(pygame.sprite.Sprite):
 
         # Отслеживание столкновений
         self.check_collision()
+
+        if self.health_points <= 0:
+            self.revival()
 
     # Управление клавиатурой
     def keyboard_check_pressing(self):
@@ -179,7 +187,7 @@ class Player(pygame.sprite.Sprite):
             if (self.collision_rect.colliderect(obj.rect) and
                     obj.__class__.__name__ == "Bullet"):
                 obj.kill()
-                self.revival()
+                self.health_points -= obj.damage
 
         # Столкновение со стенами
         if collision_vertical_wall:
@@ -229,6 +237,7 @@ class Player(pygame.sprite.Sprite):
 
     # Возрождение
     def revival(self):
+        self.health_points = constants.PLAYER_MAX_HEALTH_POINTS
         self.rect.x = self.respawn_coord[0]
         self.rect.y = self.respawn_coord[1]
         self.pointer.side_update(self.pointer.side)

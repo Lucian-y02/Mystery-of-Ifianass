@@ -42,7 +42,8 @@ available_objects = {
     "HorizontalLockedDoor": [HorizontalLockedDoor, "all_the_groups"],
     "VerticalLockedDoor": [VerticalLockedDoor, "all_the_groups"],
     "BrokenButton": [BrokenButton, "all_the_groups"],
-    "Cannon": [Cannon, "all_the_groups"]
+    "Cannon": [Cannon, "all_the_groups"],
+    "PressureButton": [PressureButton, "all_the_groups"]
 }
 
 

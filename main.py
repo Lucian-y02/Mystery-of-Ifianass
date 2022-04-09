@@ -14,6 +14,9 @@ class Scene:
             "kill_zones": pygame.sprite.Group(),  # Зоны поражения
             "enemies": pygame.sprite.Group(),  # Проитвники
             "game_stuff": pygame.sprite.Group(),  # Различные игровые объекты
+            "mobile_objects": pygame.sprite.Group(),  # Подвижные объекты
+            "ui": pygame.sprite.Group(),  # Пользовательский интерфейс
+            "buttons": pygame.sprite.Group(),  # Кнопки и механизмы
             "player": pygame.sprite.Group(),  # Игрок
             "player_chops": pygame.sprite.Group(),  # Удары игрока
             "doors": pygame.sprite.Group(),  # Двери
@@ -68,7 +71,7 @@ class Scene:
             self.groups_data[key].draw(self.screen)
         if self.fps_show:
             self.screen.blit(self.default_font.render(f"FPS {str(round(self.clock.get_fps()))}",
-                                                      False, (200, 204, 194)), (20, 20))
+                                                      False, (200, 204, 194)), (1300, 20))
 
     # Очистка уровня
     def clear_groups_data(self):
@@ -88,7 +91,8 @@ if __name__ == '__main__':
     # scene.load_level_on_scene("Levels/Demo levels/demo_level_1.json")
     # scene.load_level_on_scene("Levels/Demo levels/demo_level_2.json")
     # scene.load_level_on_scene("Levels/Demo levels/demo_level_3.json")
-    scene.load_level_on_scene("Levels/Demo levels/demo_level_5.json")
+    # scene.load_level_on_scene("Levels/Demo levels/demo_level_5.json")
+    scene.load_level_on_scene("Levels/Demo levels/demo_level_6.json")
     # scene.load_level_on_scene("Levels/level_0.json")
 
     scene.play()
